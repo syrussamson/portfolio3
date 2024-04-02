@@ -2,11 +2,14 @@ import React from "react";
 import Draggable from "react-draggable";
 import TTCTracker from "./apps/TTCTracker/TTCtracker";
 import { ResizableBox } from "react-resizable";
+import IE from "./apps/TTCTracker/IE/IE";
 
 function Window(props: any) {
+  const randomNumber = Math.random() * 100
+  console.log(randomNumber)
   return (
-    <Draggable handle="strong">
-        <div className="window-root">
+      <Draggable handle="strong">
+        <div className="window-root" style={{transform: `translate(${randomNumber}%, 0%)`}}>
         <strong>
           <div className="window-header-container">
             <div className="window-header">
@@ -43,6 +46,7 @@ function Window(props: any) {
             <a>Help</a>
         </div>
           {props.process === "TTC Tracker (toronto)" && <TTCTracker />}
+          {props.process === "Internet Explorer" && <IE />}
         </div>
       </div>
     </Draggable>

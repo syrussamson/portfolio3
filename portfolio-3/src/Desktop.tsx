@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import bus from "./assets/bus2.png";
 import trash from "./assets/trash.ico";
+import ie from './assets/ie.ico'
 import Draggable from "react-draggable";
 import { v4 as uuidv4 } from "uuid";
 import Window from "./Window";
@@ -50,6 +51,8 @@ function Desktop() {
   const apps: AppInterface[] = [
     { title: "Recycle Bin", img: trash },
     { title: "TTC Tracker (toronto)", img: bus },
+    { title: "Internet Explorer", img: ie },
+
   ];
 
   const handleSelectShortcut = (id: string) => {
