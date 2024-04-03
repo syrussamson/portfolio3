@@ -57,7 +57,6 @@ function TTCTracker() {
             </div>
           </div>
           <div className="google-map-container col-9">
-            <div className="google-map-container-inner">
               <GoogleMap
                 center={center}
                 zoom={13}
@@ -78,7 +77,6 @@ function TTCTracker() {
                     />
                   ))}
               </GoogleMap>
-            </div>
           </div>
         </div>
       </div>

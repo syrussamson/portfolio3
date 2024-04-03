@@ -10,6 +10,10 @@ interface AppInterface {
   title: string;
   img: string;
 }
+interface Process {
+  title: string;
+  zIndex: number
+}
 
 function Shortcut(
   props: AppInterface & {
@@ -46,29 +50,40 @@ function Shortcut(
 
 function Desktop() {
   const [selectedShortcut, setSelectedShortcut] = useState<string | null>(null);
-  const [openProcesses, setOpenProcesses] = useState<string[]>([]);
+  const [openProcesses, setOpenProcesses] = useState<Process[]>([]);
+
+  const handleZindex = (processTitle: string) => {
+    setOpenProcesses((prevProcesses) => {
+      return prevProcesses.map((process) => {
+        return {
+          ...process,
+          zIndex: process.title === processTitle ? process.zIndex + 1 : 0,
+        };
+      });
+    });
+  };
 
   const apps: AppInterface[] = [
     { title: "Recycle Bin", img: trash },
-    { title: "TTC Tracker (toronto)", img: bus },
+    { title: "Toronto Transit Commission", img: bus },
     { title: "Internet Explorer", img: ie },
-
   ];
 
-  const handleSelectShortcut = (id: string) => {
-    setSelectedShortcut(id);
+  const handleSelectShortcut = (title: string) => {
+    setSelectedShortcut(title);
   };
 
   const handleOpenProcess = (title: string) => {
-    if (!openProcesses.includes(title)) {
-      setOpenProcesses((prevProcesses) => [...prevProcesses, title]);
+    if (!openProcesses.find((process) => process.title === title)) {
+      setOpenProcesses((prevProcesses) => [
+        ...prevProcesses,
+        { title: title, zIndex: 10000 },
+      ]);
     }
   };
 
   const handlePurgeProcess = (title: string) => {
-    setOpenProcesses((prevProcesses) => [
-      ...prevProcesses.filter((process) => process !== title),
-    ]);
+    setOpenProcesses((prevProcesses) => prevProcesses.filter((process) => process.title !== title));
   };
 
   return (
@@ -85,18 +100,22 @@ function Desktop() {
         />
       ))}
       {/* Open processes */}
-      {openProcesses.map((process: string, index: number) => (
+      {openProcesses.map((process: Process, index: number) => (
         <Window
           key={index}
           handlePurgeProcess={handlePurgeProcess}
-          img={apps.find((app) => app.title === process)?.img || "null"}
-          process={process}
+          img={apps.find((app) => app.title === process.title)?.img || "null"}
+          process={process.title}
+          handleZindex={handleZindex}
+          zIndex={process.zIndex}
         >
-          {process}
+          {process.title}
         </Window>
       ))}
     </div>
   );
 }
+
+
 
 export default Desktop;

@@ -1,16 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Draggable from "react-draggable";
 import TTCTracker from "./apps/TTCTracker/TTCtracker";
-import { ResizableBox } from "react-resizable";
-import IE from "./apps/TTCTracker/IE/IE";
+import IE from "./apps/IE/IE";
+import RecycleBin from "./apps/RecycleBin/RecycleBin";
+
+const positionGetter = (program: string) => {
+  if (program === "Toronto Transit Commission") {
+    return { x: 500, y: -140 }
+  }
+  if (program === "Recycle Bin") {
+    return { x: 300, y: 20 }
+  }
+  if (program === "Internet Explorer") {
+    return { x: 200, y: 100 }
+  }
+  return { x: 50, y: 20 }
+}
 
 function Window(props: any) {
-  const randomNumber = Math.random() * 100
-  console.log(randomNumber)
+  const [fullScreen, setFullScreen] = useState(false)
+  const [zIndex, setZindex] = useState(4)
+
   return (
-      <Draggable handle="strong">
-        <div className="window-root" style={{transform: `translate(${randomNumber}%, 0%)`}}>
-        <strong>
+      <Draggable handle="strong" 
+      defaultPosition={positionGetter(props.process)} 
+      onStart={() => props.handleZindex(props.process)}>
+        <div className="window-root" style={{
+          position: 'absolute',
+          zIndex: props.zIndex}}
+          onClick={() => props.handleZindex(props.process)}>
+       <strong>
           <div className="window-header-container">
             <div className="window-header">
               <div className="window-header-left">
@@ -24,7 +43,7 @@ function Window(props: any) {
                 >
                   <i className="icon bi bi-dash"></i>
                 </button>
-                <button className="fullscreen-button">
+                <button className="fullscreen-button" onClick={() => setFullScreen((fs) => !fs)}>
                   <i className="icon bi bi-square"></i>
                 </button>
                 <button
@@ -45,8 +64,9 @@ function Window(props: any) {
             <a>Tools</a>
             <a>Help</a>
         </div>
-          {props.process === "TTC Tracker (toronto)" && <TTCTracker />}
+          {props.process === "Toronto Transit Commission" && <TTCTracker />}
           {props.process === "Internet Explorer" && <IE />}
+          {props.process === "Recycle Bin" && <RecycleBin />}
         </div>
       </div>
     </Draggable>

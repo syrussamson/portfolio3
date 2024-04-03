@@ -2,7 +2,7 @@ import React from 'react'
 
 function IE() {
   return (
-<div >
+<div className='ie-wrapper' >
     <div className='browser-toolbar'>
         <div className='nav-button-container back-button-container'>
             <button className='nav-button back-button' ><i className='bi bi-arrow-left-short'></i></button><a>Back</a><i className='bi bi-caret-down-fill'></i>

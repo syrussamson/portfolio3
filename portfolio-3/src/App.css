@@ -25,7 +25,6 @@
 #root {
     height: 100vh !important;
     width: 100vw !important;
-    overflow: hidden !important
 }
 :root {
     --gray: #c0c0c0;
@@ -36,6 +35,8 @@
 body {
     font-family: Tahoma !important;
     font-weight: 100 !important;
+    overflow: hidden !important
+
 }
 
 .gui-root {
@@ -87,14 +88,22 @@ body {
         width: 100%;
     }
     .application-wrapper {
+        overflow: hidden;
         border: 2px solid rgb(0, 84, 227);
         border-top: 0;
-        height: calc(100% - 50px);
+        height: calc(100% - 30px);
         width: 100%;
 
     }
 }
+.ie-wrapper {
+    height: 100%;
+    .iframe {
+        height: inherit;
+    }
+}
 .command-bar {
+    border-bottom: 1px solid #d4d0c17d;
     height: 20px;
     background-color: var(--cream);
     display: flex;
@@ -112,13 +121,12 @@ body {
         }
     }
 }
-.browser-toolbar {
+.browser-toolbar, .rc-wrapper {
     padding: 0px 7px;
     height: 40px;
     display: flex;
     justify-content: start;
     background-color: var(--cream);
-    border-top: 1px solid #d4d0c17d;
     align-items: center;
     color: #b9b9b97d !important;
     .bi-arrow-left-short::before, .bi-arrow-right-short::before {
@@ -258,3 +266,45 @@ body {
 
 }
 
+.TTC-tracker-app {
+    .container-main {
+        height: inherit;
+    }
+    .parent-row {
+        height: inherit;
+    }
+    height: 100%;
+    background-color: white !important;
+    .google-map-container {
+    }
+}
+.command-container {
+    background-color:#D5DCF6;
+    height: 100px;
+    margin: 14px 3px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.command-header {
+    background: linear-gradient(260deg, #C6D4F8, white);
+    border-radius: 5px;
+    padding: 4px 0px;
+    p {
+        font-weight: bold;
+        font-size: 0.7em;
+        color: #3A528D;
+        padding: 0px 0px;
+        margin: 0
+    }
+}
+.rc-commands {
+    background-color: #7AA1DB;
+    height: 100%;
+    width: 180px;
+    
+}
+.rc-main  {
+    height: calc(100% - 60px);
+    background-color: white;
+    margin: 0 !important;
+}
