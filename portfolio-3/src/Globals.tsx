@@ -1,3 +1,4 @@
 import { atom } from "jotai";
+import { Process } from "./Desktop";
 
-export const OpenProcesses = atom<string[]>([])
+export const OpenProcesses = atom<Process[] | []>([])

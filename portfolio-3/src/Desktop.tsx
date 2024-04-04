@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import bus from "./assets/bus2.png";
 import trash from "./assets/trash.ico";
 import ie from './assets/ie.ico'
+import notepad from './assets/NOTEPAD.EXE_14_2-3.png'
 import Draggable from "react-draggable";
 import { v4 as uuidv4 } from "uuid";
 import Window from "./Window";
+import { OpenProcesses } from "./Globals";
+import { useAtom } from "jotai";
 
 interface AppInterface {
   title: string;
   img: string;
 }
-interface Process {
+export interface Process {
   title: string;
-  zIndex: number
+  zIndex: number;
+  minimized: boolean;
+  img: string;
 }
 
 function Shortcut(
@@ -50,7 +55,7 @@ function Shortcut(
 
 function Desktop() {
   const [selectedShortcut, setSelectedShortcut] = useState<string | null>(null);
-  const [openProcesses, setOpenProcesses] = useState<Process[]>([]);
+  const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses);
 
   const handleZindex = (processTitle: string) => {
     setOpenProcesses((prevProcesses) => {
@@ -67,23 +72,37 @@ function Desktop() {
     { title: "Recycle Bin", img: trash },
     { title: "Toronto Transit Commission", img: bus },
     { title: "Internet Explorer", img: ie },
+    { title: "Notepad", img: notepad },
+
   ];
 
   const handleSelectShortcut = (title: string) => {
     setSelectedShortcut(title);
   };
 
-  const handleOpenProcess = (title: string) => {
+  const handleOpenProcess = (title: string, img: string) => {
     if (!openProcesses.find((process) => process.title === title)) {
       setOpenProcesses((prevProcesses) => [
         ...prevProcesses,
-        { title: title, zIndex: 10000 },
+        { title: title, 
+          zIndex: 10000, 
+          minimized: false,
+          img: img
+        },
       ]);
     }
   };
 
   const handlePurgeProcess = (title: string) => {
     setOpenProcesses((prevProcesses) => prevProcesses.filter((process) => process.title !== title));
+  };
+
+  const handleMinimizeProcess = (title: string) => {
+    setOpenProcesses((prevProcesses) =>
+      prevProcesses.map((process) =>
+        process.title === title ? { ...process, minimized: true } : process
+      )
+    );
   };
 
   return (
@@ -96,7 +115,7 @@ function Desktop() {
           img={app.img}
           selected={selectedShortcut === app.title}
           onSelect={() => handleSelectShortcut(app.title)}
-          openProcess={() => handleOpenProcess(app.title)}
+          openProcess={() => handleOpenProcess(app.title, app.img)}
         />
       ))}
       {/* Open processes */}
@@ -108,6 +127,8 @@ function Desktop() {
           process={process.title}
           handleZindex={handleZindex}
           zIndex={process.zIndex}
+          minimized={process.minimized}
+          handleMinimizeProcess={handleMinimizeProcess}
         >
           {process.title}
         </Window>

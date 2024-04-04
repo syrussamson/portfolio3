@@ -1,0 +1,67 @@
+.rc-commands {
+    background-color: #7AA1DB;
+    height: 100%;
+    width: 180px;
+    
+}
+.rc-main  {
+    height: calc(100% - 60px);
+    background-color: white;
+    margin: 0 !important;
+}
+
+.command-container {
+    background-color:#D5DCF6;
+    height: 80px;
+    margin: 14px 3px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.command-header {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(260deg, #C6D4F8, white);
+    border-radius: 5px;
+    padding: 4px 0px;
+    p {
+        font-weight: bold;
+        font-size: 0.7em;
+        color: #3A528D;
+        padding: 0px 0px;
+        margin: 0
+    }
+    .arrow-button {
+        border: 1px solid rgb(135, 178, 235);
+        width: 17px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(-90deg);
+        border-radius: 50%;
+        padding-bottom: 3px;
+        margin-right: 4px;
+        box-shadow: -1px 3px 3px rgba(0, 68, 255, 0.198);
+    }
+  
+}
+.command-row {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    div {
+        margin: 0px 5px;
+        display: flex;
+        justify-content: start;
+        img {
+            object-fit: contain  !important;
+            width: 18px;
+            height: 18px;
+            margin: 1px 3px
+        }
+        p {
+            margin: 0;
+            font-size: 0.7em;
+        }
+    }
+}

@@ -47,6 +47,10 @@ body {
     width: inherit;
     height: inherit;
 }
+.taskbar-left {
+    display: flex;
+    justify-content: start;
+}
 .taskbar-container {
     display: flex;
     justify-content: space-between;
@@ -54,7 +58,45 @@ body {
     bottom: 0;
     background: linear-gradient(rgb(0, 88, 238) 0%, rgb(53, 147, 255) 4%, rgb(40, 142, 255) 6%, rgb(18, 125, 255) 8%, rgb(3, 111, 252) 10%, rgb(2, 98, 238) 14%, rgb(0, 87, 229) 20%, rgb(0, 84, 227) 24%, rgb(0, 85, 235) 56%, rgb(0, 91, 245) 66%, rgb(2, 106, 254) 76%, rgb(0, 98, 239) 86%, rgb(0, 82, 214) 92%, rgb(0, 64, 171) 94%, rgb(0, 48, 146) 100%);
     height: 30px;
-    width: 100%
+    width: 100%;
+    z-index: 100000000;
+}
+.minimized-items {
+    display: flex;
+    button {
+        width: 200px;
+        color: white;
+    };
+    img {
+        height: 20px;
+        width: 20px;
+    }
+}
+
+.process-container {
+    background-color: #0643a6;
+    border: 1px solid #397eeebd;
+    display: flex;
+    justify-content: start;
+    border-top: 1px solid #195bc5;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 0.8em;
+    border-radius: 5px;
+    margin-top: 3px;
+    margin-bottom: 2px
+}
+.minimized {
+    background-color: #3A81F5;
+    border: 1px solid #397eee;
+    display: flex;
+    justify-content: start;
+    border-top: 1px solid #609bfb;
+
+    border-radius: 5px;
+    margin-top: 3px;
+    margin-bottom: 2px
 }
 .start-button {
     display: flex;
@@ -162,7 +204,7 @@ body {
 }
 
 .window-header {
-    border-radius: 3px 3px 0px 0px ;
+    border-radius: 5px 5px 0px 0px ;
     background: linear-gradient(rgb(0, 88, 238) 0%, rgb(53, 147, 255) 4%, rgb(40, 142, 255) 6%, rgb(18, 125, 255) 8%, rgb(3, 111, 252) 10%, rgb(2, 98, 238) 14%, rgb(0, 87, 229) 20%, rgb(0, 84, 227) 24%, rgb(0, 85, 235) 56%, rgb(0, 91, 245) 66%, rgb(2, 106, 254) 76%, rgb(0, 98, 239) 86%, rgb(0, 82, 214) 92%, rgb(0, 64, 171) 94%, rgb(0, 48, 146) 100%);
     display: flex;
     justify-content: space-between;
@@ -170,9 +212,12 @@ body {
     height: 30px;
     color: white !important;
     .window-header-left {
+        display: flex;
+        align-items: center;
         img {
             height: 20px;
             width: 20px;
+            margin-left: 5px
         }
         cursor: default;
     }
@@ -201,15 +246,15 @@ body {
         }
         .fullscreen-button {
             .icon::before {
-                font-size: 0.6em;
-                transform: translate(0px, -7.4px);
+                font-size: 0.7em;
+                transform: translate(0px, -6px);
             }
         }
         .x-button {
             border: 1px solid white;
             background: linear-gradient(135deg, #f94724 40%, #fb1d12);
             .icon::before {
-                transform: translate(-2.5px, -1.4px)  !important;
+                transform: translate(-2px, -2px)  !important;
                 font-size: 1.4em;
             }
         }
@@ -277,34 +322,4 @@ body {
     background-color: white !important;
     .google-map-container {
     }
-}
-.command-container {
-    background-color:#D5DCF6;
-    height: 100px;
-    margin: 14px 3px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-}
-.command-header {
-    background: linear-gradient(260deg, #C6D4F8, white);
-    border-radius: 5px;
-    padding: 4px 0px;
-    p {
-        font-weight: bold;
-        font-size: 0.7em;
-        color: #3A528D;
-        padding: 0px 0px;
-        margin: 0
-    }
-}
-.rc-commands {
-    background-color: #7AA1DB;
-    height: 100%;
-    width: 180px;
-    
-}
-.rc-main  {
-    height: calc(100% - 60px);
-    background-color: white;
-    margin: 0 !important;
 }

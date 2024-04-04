@@ -3,6 +3,7 @@ import Draggable from "react-draggable";
 import TTCTracker from "./apps/TTCTracker/TTCtracker";
 import IE from "./apps/IE/IE";
 import RecycleBin from "./apps/RecycleBin/RecycleBin";
+import Notepad from "./apps/Notepad/Notepad";
 
 const positionGetter = (program: string) => {
   if (program === "Toronto Transit Commission") {
@@ -13,6 +14,9 @@ const positionGetter = (program: string) => {
   }
   if (program === "Internet Explorer") {
     return { x: 200, y: 100 }
+  }
+  if (program === "Notepad") {
+    return { x: 200, y: 50 }
   }
   return { x: 50, y: 20 }
 }
@@ -27,6 +31,7 @@ function Window(props: any) {
       onStart={() => props.handleZindex(props.process)}>
         <div className="window-root" style={{
           position: 'absolute',
+          display: props.minimized ? 'none' : 'block',
           zIndex: props.zIndex}}
           onClick={() => props.handleZindex(props.process)}>
        <strong>
@@ -67,6 +72,7 @@ function Window(props: any) {
           {props.process === "Toronto Transit Commission" && <TTCTracker />}
           {props.process === "Internet Explorer" && <IE />}
           {props.process === "Recycle Bin" && <RecycleBin />}
+          {props.process === "Notepad" && <Notepad />}
         </div>
       </div>
     </Draggable>

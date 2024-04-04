@@ -1,5 +1,5 @@
 import React from "react";
-
+import bin from '../../assets/trash.ico'
 function RecycleBin() {
   return (
     <>
@@ -24,14 +24,27 @@ function RecycleBin() {
         <div className="rc-commands">
             <div className="command-container tasks-container">
                 <div className="command-header">
-                    <p>Recycle Bin Tasks</p>
+                    <p>Recycle Bin Tasks</p> 
+                    <button className="arrow-button" >
+                    »
+                    </button>
+                </div>
+                <div className="command-row">
+                  <div><img src={bin} /><p>Empty the Recycle Bin</p></div>
+                  <div><img src={bin} /><p>Restore all items</p></div>
                 </div>
             </div>
             <div className="command-container places-container">
                 <div className="command-header">
-
+                <p>Other Places</p> 
+                <button className="arrow-button" >
+                »
+                </button>
                 </div>
-
+                <div className="command-row">
+                  <div><img src={bin} /><p>My Computer</p></div>
+                  <div><img src={bin} /><p>My Documents</p></div>
+                </div>
             </div>
         </div>
         <div className="rc-window"></div>
