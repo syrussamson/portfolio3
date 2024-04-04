@@ -1,17 +1,32 @@
-import React from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 import windows from './assets/windows.png'
-import { OpenProcesses } from './Globals'
+import start1 from './assets/start1.png'
+import start2 from './assets/start2.png'
+import sound from './assets/sound.png'
+import { OpenProcesses, StartButtonIsOpen } from './Globals'
 import { useAtom } from 'jotai'
 function Taskbar() {
   const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses)
+  const [time, setTime] = useState(new Date());
+  const [startButtonIsOpen, setStartButtonIsOpen] = useAtom(StartButtonIsOpen)
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    // Clear interval on unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+  
   return (
     <div className='taskbar-container'>
        <div className='taskbar-left'>
        <div className='start-container'>
-            <button className='start-button'>
-            <img style={{width: 20, height: 20}} src={windows} />
-            <p><i>start</i></p>
+            <button className='start-button' onClick={() => setStartButtonIsOpen((p) => !p)}>
+            <img src={startButtonIsOpen ? start2 : start1} />
             </button>
         </div>
         <div className='minimized-items'>
@@ -29,7 +44,8 @@ function Taskbar() {
         </div>
        </div>
         <div className='control-panel-container'>
-            msn
+            <img src={sound} className='sound-icon' />
+            <p className='clock'>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
         </div>
     </div>
   )

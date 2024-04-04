@@ -3,6 +3,7 @@ import bus from "./assets/bus2.png";
 import trash from "./assets/trash.ico";
 import ie from './assets/ie.ico'
 import notepad from './assets/NOTEPAD.EXE_14_2-3.png'
+import computer from './assets/mypc.png'
 import Draggable from "react-draggable";
 import { v4 as uuidv4 } from "uuid";
 import Window from "./Window";
@@ -73,7 +74,7 @@ function Desktop() {
     { title: "Toronto Transit Commission", img: bus },
     { title: "Internet Explorer", img: ie },
     { title: "Notepad", img: notepad },
-
+    { title: "Computer", img: computer },
   ];
 
   const handleSelectShortcut = (title: string) => {

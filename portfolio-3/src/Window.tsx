@@ -4,6 +4,7 @@ import TTCTracker from "./apps/TTCTracker/TTCtracker";
 import IE from "./apps/IE/IE";
 import RecycleBin from "./apps/RecycleBin/RecycleBin";
 import Notepad from "./apps/Notepad/Notepad";
+import Computer from "./apps/Computer/Computer";
 
 const positionGetter = (program: string) => {
   if (program === "Toronto Transit Commission") {
@@ -39,7 +40,7 @@ function Window(props: any) {
             <div className="window-header">
               <div className="window-header-left">
                 <img src={props.img} />
-                {props.process}
+                <p className="process-text-main">{props.process}</p>
               </div>
               <div className="window-header-right">
                 <button
@@ -73,6 +74,7 @@ function Window(props: any) {
           {props.process === "Internet Explorer" && <IE />}
           {props.process === "Recycle Bin" && <RecycleBin />}
           {props.process === "Notepad" && <Notepad />}
+          {props.process === "Computer" && <Computer />}
         </div>
       </div>
     </Draggable>

@@ -50,6 +50,114 @@ body {
 .taskbar-left {
     display: flex;
     justify-content: start;
+    position: relative;
+}
+.control-panel-container {
+    width: 90px;
+    background: linear-gradient(180deg, #109BEE, #0C89E8);
+    box-shadow: inset 3px 3px 3px #18BFF0, inset -1px -1px 3px #0C6CCF;
+    border-top: 1px solid #0678D1;
+    border: 1px solid #085EC5;
+    border-left: 2px solid #085EC5;
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .sound-icon {
+        width: 15px;
+        height: 15px;
+        object-fit: contain;
+        margin: 5px
+    }
+    .clock {
+        margin: 0;
+        margin-right: 10px;
+        color: white;
+        font-family: Levi;
+        font-size: 1.1em;
+        letter-spacing: 0.04em;
+        height: 26px
+    }
+}
+.divider {
+    border-right: 1px solid var(--gray);
+}
+.pc-wrapper {
+    height: 100%;
+}
+.filesystem-main {
+    background-color: rgb(255, 255, 255);
+    height: calc(100% - 60px);
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
+.file-system-wrapper {
+    width: 100%;
+    overflow-y: scroll;
+}
+.filesystem-command {
+    width: 200px;
+    background-color: blue;
+    height: 100%;
+}
+.filesystem-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    h5 {
+        font-weight: 800;
+        font-size: 0.70em;
+        padding-left: 10px;
+        padding-bottom: 3px;
+    }
+    h5::after {
+        content: "";
+        width: 100%;
+        height: 1px;
+        background:linear-gradient(to right, rgb(112, 191, 255) 0px, rgb(255, 255, 255) 100%);
+        position: absolute;
+        left: 0;
+        top: 1.3em
+
+    }
+}
+.file-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Levi;
+    font-size: 1.3em !important;
+    width: 120px;
+    height: 100px;
+    border: 0px;
+    a {
+        width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+.nav-button-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    height: 20px !important;
+ img {
+    margin: 2px;
+    width: 22px;
+    height: 26px !important; 
+
+ };
+ p {
+    margin: 0;
+    color: black;
+    height: 15px;
+    font-size: 0.7em;
+ }
 }
 .taskbar-container {
     display: flex;
@@ -99,18 +207,15 @@ body {
     margin-bottom: 2px
 }
 .start-button {
-    display: flex;
-    align-items: center;
-    width: 100px;
-    background: linear-gradient(0deg, rgb(28, 170, 28), rgb(32, 143, 63));
+    background-color: transparent;
+    border: 0px;
     height: 100%;
-    color: white;
-    border: 1px solid rgba(0, 0, 0, 0.394);
-    box-shadow: inset 3px 3px 19px rgba(255, 255, 255, 0.507);
-    p {
-        margin:0px 10px 0px 4px;
-        text-shadow: 3px 3px 3px rgb(86, 86, 86);
-        font-size: 1.3em;
+    width: 100px;
+    padding: 0;
+    img {
+        height: inherit;
+        width: inherit;
+        object-fit: cover;
     }
 }
 .desktop-root {
@@ -211,12 +316,21 @@ body {
     align-items: center;
     height: 30px;
     color: white !important;
+    
     .window-header-left {
         display: flex;
         align-items: center;
+        .process-text-main {
+
+            margin: 3px;
+            letter-spacing: 0.04em;
+            font-size: 0.9em;
+            font-weight: 100;
+        }
+        
         img {
-            height: 20px;
-            width: 20px;
+            height: 18px;
+            width: 18px;
             margin-left: 5px
         }
         cursor: default;

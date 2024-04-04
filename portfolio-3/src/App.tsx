@@ -6,7 +6,7 @@ import { Resizable } from 'react-resizable'
 function App() {
   return (
     <div className='gui-root'>
-        <Desktop />
+      <Desktop />
       <Taskbar />
     </div>
   )
