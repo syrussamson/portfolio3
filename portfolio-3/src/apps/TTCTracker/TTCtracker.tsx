@@ -10,7 +10,7 @@ function TTCTracker() {
     googleMapsApiKey: "AIzaSyDo6mk8x9SbjCeZz2aSI35TfKR6hxB47so",
   });
   const [vehicles, setVehicles] = useState<any>();
-  const [map, setMap] = React.useState(null);
+  const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 43.72436, lng: -79.37812 });
 
   useEffect(() => {
