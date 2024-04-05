@@ -5,36 +5,36 @@ import { createServer } from 'http';
 import { WebSocketServer } from "ws";
 import fs from 'fs'
 import url from 'url'
+import path from 'path'
 
 const api = "AIzaSyDo6mk8x9SbjCeZz2aSI35TfKR6hxB47so"
 const app = express();
 app.use(cors());
 
-
-app.get('/root', (req, res) => {
-    const q = url.parse(req.url, true);
-    const path = q.pathname;
-    fs.readdir(`/root${path}`, (err, files) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error reading directory');
-        }
+app.get('/root/*', (req, res) => {
+    const subpath = req.params[0] || ''; 
+    const fullPath = path.join( 'root', subpath);
+    try {
+        const files = fs.readdirSync(fullPath);
         console.log('Directory read successfully!');
-        res.json(files);
-    });
+        res.status(200).send(files);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error reading directory');
+    }
 });
 
-app.post('/root', (req, res) => {
-    const q = url.parse(req.url, true);
-    const path = q.pathname;
-    fs.mkdir(`/root${path}`, (err) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error creating directory');
-        }
+app.post('/root/*', (req, res) => {
+    const subpath = req.params[0] || '';
+    const fullPath = path.join( 'root', subpath);
+    try {
+        fs.mkdirSync(fullPath);
         console.log('Directory created successfully!');
         res.status(201).send('Directory created successfully');
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error creating directory or path already exists. ');
+    }
 });
 
 

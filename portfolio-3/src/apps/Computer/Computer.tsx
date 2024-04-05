@@ -34,6 +34,9 @@ function ContextRow({
   );
 }
 
+
+
+
 const fetchDirectory = (path: string) => {
   fetch(`http://localhost:3333/root/${path}`, {
       method: "GET",
@@ -41,11 +44,12 @@ const fetchDirectory = (path: string) => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then((res) => console.log(res))
       .then((res) => console.log(res));
 }
 
 const createNewFolder = (path: string) => {
+  console.log(path)
   fetch(`http://localhost:3333/root/${path}`, {
     method: "POST", 
     headers: {
@@ -68,7 +72,7 @@ function Computer() {
   const [menuServiceType, setMenuServiceType] = useState<string | null>(null);
   const [isInRoot, setIsInRoot] = useState(true);
   const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
-  const [path, setPath] = useState('root/')
+  const [relativePath, setRelativePath] = useState('')
 
 
   const openErrorDialogue = () => {
@@ -80,8 +84,8 @@ function Computer() {
   };
 
   useEffect(() => {
-    fetchDirectory(path)
-  }, [path]);
+    fetchDirectory(relativePath)
+  }, [relativePath]);
 
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -136,7 +140,8 @@ function Computer() {
             <div className="filesystem-container">
               <a id="process"
                onContextMenu={handleContextMenu}
-               onClick={() => createNewFolder('test')}>
+               onClick={(e) => {
+                createNewFolder(`${e.target.id}`)}}>
                 Hello
               </a>
               <Menu
