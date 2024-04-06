@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { OpenProcesses } from "../../Globals";
 import NavPanel from "../Shared/NavPanel";
-import { FileTemplate as File } from "../Shared/FileTemplate";
+import FileTemplate, { FileTemplate as File } from "../Shared/FileTemplate";
 import documents from "../../assets/documents.png";
 import hd from "../../assets/harddrive.png";
 import network from "../../assets/network.ico";
@@ -73,8 +73,7 @@ function Computer() {
   const [isInRoot, setIsInRoot] = useState(true);
   const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
   const [relativePath, setRelativePath] = useState('')
-
-
+  const [creating, setCreating] = useState(false)
   const openErrorDialogue = () => {
     setError(true);
   };
@@ -138,12 +137,11 @@ function Computer() {
             onContextMenu={handleContextMenu}
           >
             <div className="filesystem-container">
-              <a id="process"
-               onContextMenu={handleContextMenu}
-               onClick={(e) => {
-                createNewFolder(`${e.target.id}`)}}>
-                Hello
-              </a>
+              {
+                creating && (
+                  <File img={documents} title={"New Folder"} />
+                )
+              }
               <Menu
                 style={{ zIndex: 1000000, padding: 0, margin: 0 }}
                 open={openMenu}
@@ -173,7 +171,10 @@ function Computer() {
                       <ContextRow
                       label="New Folder"
                       id="open"
-                      onClickFunction={null}
+                      onClickFunction={() => {
+                        setOpenMenu(false)
+                        setCreating(true)
+                      }}
                       style={"bold"}
                     />
                     )

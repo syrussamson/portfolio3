@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export function FileTemplate({
     img, 
@@ -9,9 +9,9 @@ export function FileTemplate({
     title: string,
     whenSelected: any
 }) {
-
+  const [isEditing, setIsEditing] = useState(false)
   return (
-    <button className='file-component' onDoubleClick={whenSelected} >
+    <button className='file-component' onDoubleClick={(whenSelected)} >
     <img src={img} />
     <a>{title}</a>
     </button>

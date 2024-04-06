@@ -19,7 +19,7 @@ const positionGetter = (program: string) => {
   if (program === "Notepad") {
     return { x: 200, y: 50 }
   }
-  return { x: 50, y: 20 }
+  return { x: 70, y: -379 }
 }
 
 function Window(props: any) {
