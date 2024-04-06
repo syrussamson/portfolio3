@@ -5,6 +5,8 @@ import IE from "./apps/IE/IE";
 import RecycleBin from "./apps/RecycleBin/RecycleBin";
 import Notepad from "./apps/Notepad/Notepad";
 import Computer from "./apps/Computer/Computer";
+import { RelativePath } from "./Globals";
+import { useAtom } from "jotai";
 
 const positionGetter = (program: string) => {
   if (program === "Toronto Transit Commission") {
@@ -25,6 +27,8 @@ const positionGetter = (program: string) => {
 function Window(props: any) {
   const [fullScreen, setFullScreen] = useState(false)
   const [zIndex, setZindex] = useState(4)
+  const [relativePath] = useAtom(RelativePath)
+
 
   return (
       <Draggable handle="strong" 
@@ -40,7 +44,7 @@ function Window(props: any) {
             <div className="window-header">
               <div className="window-header-left">
                 <img src={props.img} />
-                <p className="process-text-main">{props.process}</p>
+                <p className="process-text-main">{props.process === 'Computer' ? `${props.process}/${relativePath}`: props.process}</p>
               </div>
               <div className="window-header-right">
                 <button

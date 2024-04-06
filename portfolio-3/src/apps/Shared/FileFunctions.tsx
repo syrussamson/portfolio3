@@ -1,42 +1,52 @@
 import { ClickAwayListener } from "@mui/material";
 import React, { useState } from "react";
 
-
-const submitConfirmation = (params) => {
-    
-}
-
-
 export function File({
   img,
-  _title,
+  title,
   whenSelected,
+  renameOnCreate,
+  createNewFolder,
+  relativePath,
+  setCreating,
 }: {
   img: string;
   title: string;
   whenSelected: any;
+  renameOnCreate: boolean;
+  relativePath: string;
+  setCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  createNewFolder: (path: string, relativePath: string) => void;
 }) {
-  const [isEditing, setIsEditing] = useState(true);
-  const [title, setTitle] = useState(_title)
+  const [isEditing, setIsEditing] = useState(renameOnCreate);
+  const [fileTitle, setFileTitle] = useState(title);
+
   return (
     <button className="file-component" onDoubleClick={whenSelected}>
       <img src={img} />
-        {
-            isEditing && (
-                <ClickAwayListener onClickAway={(e) => {
-                    console.log(e)
-                    setTitle(e.target.value)
-                    setIsEditing(false)
-                }}>
-                    <input placeholder={'test'}/>
-                </ClickAwayListener>
-            )
-        }
-        {
-            !isEditing && (
-                <a>{title}</a>
-            )
-        }
+      {isEditing && (
+        <ClickAwayListener
+          onClickAway={async (e) => {
+            if ((e.target as HTMLElement).className === "file-component") {
+              console.log("blocked event");
+              return e.preventDefault();
+            }
+            setIsEditing(false);
+            setCreating(false);
+            createNewFolder(`${relativePath}/${fileTitle}`, relativePath);
+            console.log("relative path in folder: ", relativePath);
+          }}
+        >
+          <input
+            className="file-edit-box"
+            onChange={(e) => setFileTitle(e.target.value)}
+            defaultValue={fileTitle}
+          />
+        </ClickAwayListener>
+      )}
+      {!isEditing && (
+        <a onDoubleClick={() => setIsEditing(true)}>{fileTitle}</a>
+      )}
     </button>
   );
 }

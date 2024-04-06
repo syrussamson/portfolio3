@@ -11,29 +11,48 @@ const api = "AIzaSyDo6mk8x9SbjCeZz2aSI35TfKR6hxB47so"
 const app = express();
 app.use(cors());
 
+
 app.get('/root/*', (req, res) => {
-    const subpath = req.params[0] || ''; 
-    const fullPath = path.join( 'root', subpath);
+    const subpath = req.params[0] || '';
+    const fullPath = path.join('root', subpath);
     try {
-        const files = fs.readdirSync(fullPath);
-        console.log('Directory read successfully!');
-        res.status(200).send(files);
+        const filesAndDirectories = fs.readdirSync(fullPath).map(name => {
+            const itemPath = path.join(fullPath, name);
+            const stats = fs.statSync(itemPath);
+            return {
+                title: name,
+                type: stats.isDirectory() ? 'folder' : 'file',
+                path: itemPath.substring(5)
+            };
+        });
+
+        console.log('Directory read');
+        res.status(200).json(filesAndDirectories);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error reading directory');
     }
 });
 
+
+
 app.post('/root/*', (req, res) => {
     const subpath = req.params[0] || '';
-    const fullPath = path.join( 'root', subpath);
+    const fullPath = path.join('root', subpath);
     try {
-        fs.mkdirSync(fullPath);
-        console.log('Directory created successfully!');
-        res.status(201).send('Directory created successfully');
+        if (fs.existsSync(fullPath)) {
+            const newPath = `${fullPath}(1)`;
+            fs.mkdirSync(newPath);
+            console.log('Directory created successfully!');
+            res.status(201).json({sent: 'success'});
+        } else {
+            fs.mkdirSync(fullPath);
+            console.log('Directory created successfully!');
+            res.status(201).json({sent: 'success'});
+        }
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error creating directory or path already exists. ');
+        res.status(500).json({sent: 'fail'});
     }
 });
 
