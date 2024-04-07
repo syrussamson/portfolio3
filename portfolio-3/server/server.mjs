@@ -57,7 +57,25 @@ app.post('/root/*', (req, res) => {
 });
 
 
-
+app.put('/root/*', (req, res) => {
+    const subpath = req.params[0] || '';
+    const fullPath = path.join('root', subpath);
+    const { newName } = req.body;
+    console.log(newName, path)
+    try {
+        if (fs.existsSync(fullPath)) {
+            const newPath = path.join('root', path.dirname(subpath), newName);
+            fs.renameSync(fullPath, newPath);
+            console.log('File or directory renamed successfully!');
+            res.status(200).json({ message: 'File or directory renamed successfully' });
+        } else {
+            res.status(404).json({ error: 'File or directory not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error renaming file or directory' });
+    }
+});
 
 const PORT = 3333;
 const httpServer = createServer(app);

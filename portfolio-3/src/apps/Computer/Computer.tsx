@@ -34,7 +34,7 @@ const imgGetter = (type: string) => {
   }
 };
 
-interface Item {
+export interface Item {
   title: string;
   type: string;
   path: string;
@@ -76,15 +76,15 @@ function Computer() {
   const [relativePath, setRelativePath] = useAtom(RelativePath);
   const [items, setItems] = useState<Item[] | undefined>();
   const [creating, setCreating] = useState(false);
+  const [targetToEdit, setTargetToEdit] = useState<Item | undefined>()
+  const [editingTarget, setEditingTarget] = useState(false)
 
   const openErrorDialogue = () => {
     setError(true);
   };
-
   const openServer = () => {
     setIsInRoot(false);
   };
-
   useEffect(() => {
     fetchDirectory(relativePath);
   }, [relativePath]);
@@ -94,6 +94,12 @@ function Computer() {
     setMenuPosition({ left: e.clientX, top: e.clientY });
     setOpenMenu(true);
     setMenuServiceType(e.target.id);
+    console.log(e.target)
+    const itemTarget = items?.find(item => e.target.alt === item.path || e.target.id === item.path)
+    if (itemTarget) {
+      console.log('target to edit: ', itemTarget)
+      setTargetToEdit(itemTarget)
+    }
   };
 
   const handleCreateNewFolder = (dir: string) => {
@@ -142,15 +148,15 @@ function Computer() {
 
     // PUT (rename) it then map to Items
     const renameNewFolder = (path: string, oldName: string, newName: string) => {
-      console.log(path);
+      console.log(path, oldName, newName);
       fetch(`http://localhost:3333/root/${path}`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           path: path,
-          oldName: path,
+          oldName: oldName,
           newName: newName
         }),
       })
@@ -176,6 +182,7 @@ function Computer() {
             <div className="filesystem-container">
               {items && items.map((item, i) => (
                   <File
+                    path={item.path}
                     title={item.title}
                     img={imgGetter(item.type)}
                     key={item.title + item.path}
@@ -187,6 +194,10 @@ function Computer() {
                     relativePath={relativePath}
                     createNewFolder={createNewFolder}
                     setCreating={setCreating}
+                    targetToEdit={targetToEdit}
+                    editingTarget={editingTarget}
+                    setEditingTarget={setEditingTarget}
+                    renameNewFolder={renameNewFolder}
                   />
                 ))}
                 {
@@ -196,12 +207,16 @@ function Computer() {
                 }
               {creating && (
                 <File 
+                path={relativePath}
+                targetToEdit={targetToEdit}
                 img={documents} 
                 title="New Folder" 
                 whenSelected={null} 
                 renameOnCreate={true}
                 relativePath={relativePath}
                 setCreating={setCreating}
+                setEditingTarget={setEditingTarget}
+                editingTarget={editingTarget}
                 createNewFolder={(folderPath) => {
                   fetch(`http://localhost:3333/root/${folderPath}`, {
                     method: "POST",
@@ -286,7 +301,10 @@ function Computer() {
                   <ContextRow
                     label="Rename"
                     id="rename"
-                    onClickFunction={null}
+                    onClickFunction={() => {
+                      setOpenMenu(false)
+                      setEditingTarget(true)
+                    }}
                     style={"none"}
                   />
                   <ul />
