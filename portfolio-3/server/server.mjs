@@ -40,19 +40,19 @@ app.post('/root/*', (req, res) => {
     const subpath = req.params[0] || '';
     const fullPath = path.join('root', subpath);
     try {
-        if (fs.existsSync(fullPath)) {
-            const newPath = `${fullPath}(1)`;
-            fs.mkdirSync(newPath);
-            console.log('Directory created successfully!');
-            res.status(201).json({sent: 'success'});
-        } else {
-            fs.mkdirSync(fullPath);
-            console.log('Directory created successfully!');
-            res.status(201).json({sent: 'success'});
+        let newDirectoryPath = fullPath;
+        let count = 1;
+        while (fs.existsSync(newDirectoryPath)) {
+            newDirectoryPath = `${fullPath}(${count})`;
+            count++;
         }
+        
+        fs.mkdirSync(newDirectoryPath);
+        console.log('Directory created successfully!');
+        res.status(201).json({ sent: 'success' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({sent: 'fail'});
+        res.status(500).json({ sent: 'fail' });
     }
 });
 
@@ -68,13 +68,13 @@ app.put('/root/*', (req, res) => {
             const newPath = path.join('root', path.dirname(subpath), newName);
             fs.renameSync(fullPath, newPath);
             console.log('File or directory renamed successfully!');
-            res.status(200).json({ message: 'File or directory renamed successfully' });
+            res.status(200).json({ message: 'directory renamed successfully' });
         } else {
-            res.status(404).json({ error: 'File or directory not found' });
+            res.status(404).json({ error: 'not found' });
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Error renaming file or directory' });
+        res.status(500).json({ error: 'Error renaming directory'});
     }
 });
 

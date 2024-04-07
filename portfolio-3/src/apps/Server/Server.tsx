@@ -7,6 +7,8 @@ import File from "../Shared/FileFunctions";
 import documents from "../../assets/documents.png";
 import hd from "../../assets/harddrive.png";
 import network from "../../assets/network.ico";
+import pc from '../../assets/network.png'
+import globe from '../../assets/globe.webp'
 import { Menu } from "@mui/material";
 import file from "../../assets/txt.png";
 import { v4 as uuidv4 } from "uuid";
@@ -15,12 +17,12 @@ const uuid = uuidv4;
 
 const pathBacktracer = (path: string) => {
   console.log(path);
-  let pathArray = path.split('/');
+  let pathArray = path.split("/");
   if (pathArray.length === 1) {
-    return '';
+    return "";
   }
   pathArray.pop();
-  return pathArray.join('/');
+  return pathArray.join("/");
 };
 
 const imgGetter = (type: string) => {
@@ -66,7 +68,7 @@ function ContextRow({
   );
 }
 
-function Computer() {
+function Server() {
   const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses);
   const [error, setError] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -76,8 +78,8 @@ function Computer() {
   const [relativePath, setRelativePath] = useAtom(RelativePath);
   const [items, setItems] = useState<Item[] | undefined>();
   const [creating, setCreating] = useState(false);
-  const [targetToEdit, setTargetToEdit] = useState<Item | undefined>()
-  const [editingTarget, setEditingTarget] = useState(false)
+  const [targetToEdit, setTargetToEdit] = useState<Item | undefined>();
+  const [editingTarget, setEditingTarget] = useState(false);
 
   const openErrorDialogue = () => {
     setError(true);
@@ -94,11 +96,13 @@ function Computer() {
     setMenuPosition({ left: e.clientX, top: e.clientY });
     setOpenMenu(true);
     setMenuServiceType(e.target.id);
-    console.log(e.target)
-    const itemTarget = items?.find(item => e.target.alt === item.path || e.target.id === item.path)
+    console.log(e.target);
+    const itemTarget = items?.find(
+      (item) => e.target.alt === item.path || e.target.id === item.path
+    );
     if (itemTarget) {
-      console.log('target to edit: ', itemTarget)
-      setTargetToEdit(itemTarget)
+      console.log("target to edit: ", itemTarget);
+      setTargetToEdit(itemTarget);
     }
   };
 
@@ -107,13 +111,12 @@ function Computer() {
   };
 
   const selectHandler = (item: Item) => {
-    console.log('select handler: ', item);
+    console.log("select handler: ", item);
     if (item.type === "folder") {
       setRelativePath(item.path);
       return fetchDirectory("" + item.path);
     }
   };
-
 
   // GET then set to Items
   const fetchDirectory = (path: string) => {
@@ -128,56 +131,93 @@ function Computer() {
       .then((res) => setItems(res));
   };
 
-
   // POST it then map to Items
-  const createNewFolder = (path: string, type: string) => {
+  const createNewFolder = (path: string) => {
     console.log(path);
     fetch(`http://localhost:3333/root/${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+    })
+      .then((res) => res.json())
+      .then((res) => setItems(res));
+  };
+
+  // PUT (rename) it then map to Items
+  const renameFolder = (path: string, oldName: string, newName: string) => {
+    console.log("Request Body:", {
+      path: path,
+      oldName: oldName,
+      newName: newName,
+    });
+    fetch(`http://localhost:3333/root/${path}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         path: path,
-        type: type || 'folder'
+        oldName: oldName,
+        newName: newName,
       }),
     })
       .then((res) => res.json())
-      .then((res) => setItems(res))
+      .then((res) => console.log(res))
+      .finally(() => fetchDirectory(relativePath));
   };
-
-    // PUT (rename) it then map to Items
-    const renameFolder = (path: string, oldName: string, newName: string) => {
-      console.log("Request Body:", {
-        path: path,
-        oldName: oldName,
-        newName: newName
-      });
-        fetch(`http://localhost:3333/root/${path}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          path: path,
-          oldName: oldName,
-          newName: newName
-        }),
-      })
-        .then((res) => res.json())
-        .then((res) => console.log(res))
-        .finally(() => fetchDirectory(relativePath))
-    };
-  
 
   return (
     <div className="pc-wrapper">
-      <NavPanel path={relativePath} backFunction={() => {
-        fetchDirectory(pathBacktracer(relativePath))
-        setRelativePath(pathBacktracer(relativePath))
-      }} />
+      <NavPanel
+        path={relativePath}
+        backFunction={() => {
+          fetchDirectory(pathBacktracer(relativePath));
+          setRelativePath(pathBacktracer(relativePath));
+        }}
+      />
       <div className="filesystem-main">
-        <div className="filesystem-command"></div>
+        <div className="filesystem-command">
+        <div className="rc-commands">
+          <div className="command-container-wrapper">
+          <div className="command-container tasks-container">
+            <div className="command-header">
+              <p>File and Folder Tasks</p>
+              <button className="arrow-button">»</button>
+            </div>
+            <div className="command-row">
+              <div>
+                <img src={network} />
+                <p>Publish the folder</p>
+              </div>
+              <div>
+                <img
+                  src={globe}
+                  style={{ transform: "rotate(180deg) scale(0.7)" }}
+                />
+                <p>Share the folder</p>
+              </div>
+            </div>
+          </div>
+          <div className="command-container places-container">
+            <div className="command-header">
+              <p>Other Places</p>
+              <button className="arrow-button">»</button>
+            </div>
+            <div className="command-row">
+              <div>
+                <img src={pc} />
+                <p>My Network</p>
+              </div>
+              <div>
+                <img src={documents} />
+                <p>My Documents</p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
         {!isInRoot && (
           <div
             className="filesystem-wrapper"
@@ -185,15 +225,16 @@ function Computer() {
             onContextMenu={handleContextMenu}
           >
             <div className="filesystem-container">
-              {items && items.map((item, i) => (
+              {items &&
+                items.map((item, i) => (
                   <File
                     path={item.path}
                     title={item.title}
                     img={imgGetter(item.type)}
                     key={item.title + item.path}
                     whenSelected={() => {
-                      console.log('item in map: ', item)
-                      selectHandler(item)
+                      console.log("item in map: ", item);
+                      selectHandler(item);
                     }}
                     renameOnCreate={false}
                     relativePath={relativePath}
@@ -205,37 +246,38 @@ function Computer() {
                     renameNewFolder={renameFolder}
                   />
                 ))}
-                {
-                  items && items.length === 0 && (
-                    <p style={{color: '#aaa', fontSize:'0.7em', margin: 10}}>This folder is empty</p>
-                  )
-                }
+              {items && items.length === 0 && (
+                <p style={{ color: "#aaa", fontSize: "0.7em", margin: 10 }}>
+                  This folder is empty
+                </p>
+              )}
               {creating && (
-                <File 
-                path={relativePath}
-                targetToEdit={targetToEdit}
-                img={documents} 
-                title="New Folder" 
-                whenSelected={null} 
-                renameOnCreate={true}
-                relativePath={relativePath}
-                setCreating={setCreating}
-                setEditingTarget={setEditingTarget}
-                editingTarget={editingTarget}
-                createNewFolder={(folderPath) => {
-                  fetch(`http://localhost:3333/root/${folderPath}`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      path: folderPath,
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then((res) => console.log(res))
-                    .finally(() => fetchDirectory(relativePath))
-                }} 
+                <File
+                  renameNewFolder={renameFolder}
+                  path={relativePath}
+                  targetToEdit={targetToEdit}
+                  img={documents}
+                  title="New Folder"
+                  whenSelected={null}
+                  renameOnCreate={true}
+                  relativePath={relativePath}
+                  setCreating={setCreating}
+                  setEditingTarget={setEditingTarget}
+                  editingTarget={editingTarget}
+                  createNewFolder={(folderPath) => {
+                    fetch(`http://localhost:3333/root/${folderPath}`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        path: folderPath,
+                      }),
+                    })
+                      .then((res) => res.json())
+                      .then((res) => console.log(res))
+                      .finally(() => fetchDirectory(relativePath));
+                  }}
                 />
               )}
               <Menu
@@ -307,8 +349,8 @@ function Computer() {
                     label="Rename"
                     id="rename"
                     onClickFunction={() => {
-                      setOpenMenu(false)
-                      setEditingTarget(true)
+                      setOpenMenu(false);
+                      setEditingTarget(true);
                     }}
                     style={"none"}
                   />
@@ -357,4 +399,4 @@ function Computer() {
   );
 }
 
-export default Computer;
+export default Server;

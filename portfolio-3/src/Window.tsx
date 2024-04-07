@@ -4,7 +4,7 @@ import TTCTracker from "./apps/TTCTracker/TTCtracker";
 import IE from "./apps/IE/IE";
 import RecycleBin from "./apps/RecycleBin/RecycleBin";
 import Notepad from "./apps/Notepad/Notepad";
-import Computer from "./apps/Computer/Computer";
+import Server from "./apps/Server/Server";
 import { RelativePath } from "./Globals";
 import { useAtom } from "jotai";
 
@@ -78,7 +78,7 @@ function Window(props: any) {
           {props.process === "Internet Explorer" && <IE />}
           {props.process === "Recycle Bin" && <RecycleBin />}
           {props.process === "Notepad" && <Notepad />}
-          {props.process === "Computer" && <Computer />}
+          {props.process === "Computer" && <Server />}
         </div>
       </div>
     </Draggable>

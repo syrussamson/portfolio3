@@ -39,6 +39,21 @@ body {
     overflow: hidden !important
 
 }
+.login-root {
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle at -40% -40%, rgb(153, 175, 236) 10%, rgb(99, 124, 214) 90%);
+    width: 100vw;
+    height: 100vh;
+}
+.login-top {
+    height: calc(100% - 80px)
+}
+.login-bottom {
+    height: 80px;
+    width: 100vw;
+    background-color: rgb(38, 48,158);
+}
 
 .gui-root {
     background-image: url('./assets/bliss.webp');
@@ -99,8 +114,18 @@ body {
 }
 .filesystem-command {
     width: 200px;
-    background-color: blue;
     height: 100%;
+    .rc-commands {
+        width: 100%;
+        height: 100%;
+        .command-container-wrapper {
+            padding-top: 20px
+        }
+        .command-container {
+            margin: 20px;
+            margin-top: 0px
+        }
+    }
 }
 .filesystem-container {
     display: flex;
@@ -111,7 +136,7 @@ body {
 }
 .file-system-home {
     position: relative;
-    .file-system-container {
+    .filesystem-container2 {
         position: relative;
         h5 {
             font-weight: 800;
@@ -182,6 +207,8 @@ body {
 }
 .file-edit-box {
     height: 1em;
+    margin: 8px;
+    margin-top: 5px;
     text-align: center;
     max-width: 100px;
     white-space: wrap;

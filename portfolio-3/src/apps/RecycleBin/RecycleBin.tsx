@@ -11,7 +11,7 @@ function RecycleBin() {
   return (
     <>
       <div className="rc-wrapper">
-        <NavPanel />
+        <NavPanel backFunction={null} />
       </div>
       <div className="rc-main row">
         <div className="rc-commands">

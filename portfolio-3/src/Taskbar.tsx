@@ -31,8 +31,8 @@ function Taskbar() {
         </div>
         <div className='minimized-items'>
           {
-            openProcesses.map((process) => (
-              <button id={process.title} onClick={(e) => setOpenProcesses((prevProcesses) =>
+            openProcesses && openProcesses.map((process) => (
+              <button key={process.title} id={process.title} onClick={(e) => setOpenProcesses((prevProcesses) =>
                 prevProcesses.map((p) =>
                   p.title === (e.target as HTMLElement).id ? { ...p, minimized: !p.minimized } : p
                 )

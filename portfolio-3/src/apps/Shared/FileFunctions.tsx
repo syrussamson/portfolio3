@@ -1,6 +1,6 @@
 import { ClickAwayListener } from "@mui/material";
 import React, { useState } from "react";
-import { Item } from "../Computer/Computer";
+import { Item } from "../Server/Server";
 
 export function File({
   img,
@@ -55,7 +55,7 @@ export function File({
           />
         </ClickAwayListener>
       )}
-      {!isEditing  && editingTarget && targetToEdit && targetToEdit.path === path && (
+      {!isEditing && editingTarget && targetToEdit && targetToEdit.path === path && (
         <ClickAwayListener
           onClickAway={async (e) => {
             if ((e.target as HTMLElement).className === "file-component") {
