@@ -55,7 +55,7 @@ export function File({
           />
         </ClickAwayListener>
       )}
-      {!isEditing  && editingTarget && (
+      {!isEditing  && editingTarget && targetToEdit && targetToEdit.path === path && (
         <ClickAwayListener
           onClickAway={async (e) => {
             if ((e.target as HTMLElement).className === "file-component") {
@@ -66,7 +66,7 @@ export function File({
             setCreating(false);
             setEditingTarget(false);
             console.log("relative path in folder: ", relativePath);
-            renameNewFolder(`${relativePath}/${fileTitle}`, oldName, fileTitle )
+            renameNewFolder(`${relativePath}/${path}`, path, fileTitle )
           }}
         >
           <input
@@ -80,6 +80,12 @@ export function File({
       {!isEditing && !editingTarget && (
         <a style={{background: (editingTarget && targetToEdit?.path === path )? 'red' : 'transparent'}} onDoubleClick={() => setIsEditing(true)}>{fileTitle}</a>
       )}
+      {
+        !isEditing && editingTarget && targetToEdit && targetToEdit.path !== path && (
+          <a>{fileTitle}</a>
+
+        )
+      }
     </button>
   );
 }

@@ -147,9 +147,13 @@ function Computer() {
   };
 
     // PUT (rename) it then map to Items
-    const renameNewFolder = (path: string, oldName: string, newName: string) => {
-      console.log(path, oldName, newName);
-      fetch(`http://localhost:3333/root/${path}`, {
+    const renameFolder = (path: string, oldName: string, newName: string) => {
+      console.log("Request Body:", {
+        path: path,
+        oldName: oldName,
+        newName: newName
+      });
+        fetch(`http://localhost:3333/root/${path}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +165,8 @@ function Computer() {
         }),
       })
         .then((res) => res.json())
-        .then((res) => setItems(res))
+        .then((res) => console.log(res))
+        .finally(() => fetchDirectory(relativePath))
     };
   
 
@@ -197,7 +202,7 @@ function Computer() {
                     targetToEdit={targetToEdit}
                     editingTarget={editingTarget}
                     setEditingTarget={setEditingTarget}
-                    renameNewFolder={renameNewFolder}
+                    renameNewFolder={renameFolder}
                   />
                 ))}
                 {

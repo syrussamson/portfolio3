@@ -10,7 +10,7 @@ import path from 'path'
 const api = "AIzaSyDo6mk8x9SbjCeZz2aSI35TfKR6hxB47so"
 const app = express();
 app.use(cors());
-
+app.use(express.json())
 
 app.get('/root/*', (req, res) => {
     const subpath = req.params[0] || '';
@@ -60,8 +60,9 @@ app.post('/root/*', (req, res) => {
 app.put('/root/*', (req, res) => {
     const subpath = req.params[0] || '';
     const fullPath = path.join('root', subpath);
+    console.log(req.body);
     const { newName } = req.body;
-    console.log(newName, path)
+
     try {
         if (fs.existsSync(fullPath)) {
             const newPath = path.join('root', path.dirname(subpath), newName);
