@@ -78,6 +78,30 @@ app.put('/root/*', (req, res) => {
     }
 });
 
+app.delete('/root/*', (req, res) => {
+    const subpath = req.params[0] || '';
+    const fullPath = path.join('root', subpath);
+    try {
+        if (fs.existsSync(fullPath)) {
+            if (fs.statSync(fullPath).isDirectory()) {
+                fs.rmdirSync(fullPath, { recursive: true });
+                console.log('Directory deleted successfully!');
+                res.status(200).json({ message: 'Directory deleted successfully' });
+            } else {
+                fs.unlinkSync(fullPath);
+                console.log('File deleted successfully!');
+                res.status(200).json({ message: 'File deleted successfully' });
+            }
+        } else {
+            res.status(404).json({ error: 'File or directory not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error deleting file or directory' });
+    }
+});
+
+
 const PORT = 3333;
 const httpServer = createServer(app);
 const wss = new WebSocketServer({ server: httpServer });

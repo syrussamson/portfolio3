@@ -116,7 +116,7 @@ body {
     width: 200px;
     height: 100%;
     .rc-commands {
-        width: 100%;
+        width: 180px;
         height: 100%;
         .command-container-wrapper {
             padding-top: 20px

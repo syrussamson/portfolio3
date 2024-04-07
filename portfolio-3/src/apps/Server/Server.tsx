@@ -7,8 +7,8 @@ import File from "../Shared/FileFunctions";
 import documents from "../../assets/documents.png";
 import hd from "../../assets/harddrive.png";
 import network from "../../assets/network.ico";
-import pc from '../../assets/network.png'
-import globe from '../../assets/globe.webp'
+import pc from "../../assets/network.png";
+import globe from "../../assets/globe.webp";
 import { Menu } from "@mui/material";
 import file from "../../assets/txt.png";
 import { v4 as uuidv4 } from "uuid";
@@ -69,7 +69,6 @@ function ContextRow({
 }
 
 function Server() {
-  const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses);
   const [error, setError] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [menuServiceType, setMenuServiceType] = useState<string | null>(null);
@@ -91,14 +90,16 @@ function Server() {
     fetchDirectory(relativePath);
   }, [relativePath]);
 
-  const handleContextMenu = (e: any) => {
+  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setMenuPosition({ left: e.clientX, top: e.clientY });
     setOpenMenu(true);
-    setMenuServiceType(e.target.id);
+    setMenuServiceType((e.target as HTMLDivElement).id);
     console.log(e.target);
     const itemTarget = items?.find(
-      (item) => e.target.alt === item.path || e.target.id === item.path
+      (item) =>
+        (e.target as HTMLImageElement).alt === item.path ||
+        (e.target as HTMLDivElement).id === item.path
     );
     if (itemTarget) {
       console.log("target to edit: ", itemTarget);
@@ -132,16 +133,44 @@ function Server() {
   };
 
   // POST it then map to Items
+  // const createNewFolder = (path: string) => {
+  //   console.log(path);
+  //   fetch(`http://localhost:3333/root/${path}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => setItems(res));
+  // };
   const createNewFolder = (path: string) => {
-    console.log(path);
     fetch(`http://localhost:3333/root/${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        path: path,
+      }),
     })
       .then((res) => res.json())
-      .then((res) => setItems(res));
+      .then((res) => console.log(res))
+      .finally(() => fetchDirectory(relativePath));
+  }
+  
+  // DELETE it then map to Items
+  const deleteFolder = (path: string) => {
+    console.log(path);
+    fetch(`http://localhost:3333/root/${path}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+      .finally(() => fetchDirectory(relativePath));
   };
 
   // PUT (rename) it then map to Items
@@ -178,45 +207,45 @@ function Server() {
       />
       <div className="filesystem-main">
         <div className="filesystem-command">
-        <div className="rc-commands">
-          <div className="command-container-wrapper">
-          <div className="command-container tasks-container">
-            <div className="command-header">
-              <p>File and Folder Tasks</p>
-              <button className="arrow-button">»</button>
-            </div>
-            <div className="command-row">
-              <div>
-                <img src={network} />
-                <p>Publish the folder</p>
+          <div className="rc-commands">
+            <div className="command-container-wrapper">
+              <div className="command-container tasks-container">
+                <div className="command-header">
+                  <p>File and Folder Tasks</p>
+                  <button className="arrow-button">»</button>
+                </div>
+                <div className="command-row">
+                  <div>
+                    <img src={network} />
+                    <p>Publish the folder</p>
+                  </div>
+                  <div>
+                    <img
+                      src={globe}
+                      style={{ transform: "rotate(180deg) scale(0.7)" }}
+                    />
+                    <p>Share the folder</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <img
-                  src={globe}
-                  style={{ transform: "rotate(180deg) scale(0.7)" }}
-                />
-                <p>Share the folder</p>
+              <div className="command-container places-container">
+                <div className="command-header">
+                  <p>Other Places</p>
+                  <button className="arrow-button">»</button>
+                </div>
+                <div className="command-row">
+                  <div>
+                    <img src={pc} />
+                    <p>My Network</p>
+                  </div>
+                  <div>
+                    <img src={documents} />
+                    <p>My Documents</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="command-container places-container">
-            <div className="command-header">
-              <p>Other Places</p>
-              <button className="arrow-button">»</button>
-            </div>
-            <div className="command-row">
-              <div>
-                <img src={pc} />
-                <p>My Network</p>
-              </div>
-              <div>
-                <img src={documents} />
-                <p>My Documents</p>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
         </div>
         {!isInRoot && (
           <div
@@ -226,14 +255,13 @@ function Server() {
           >
             <div className="filesystem-container">
               {items &&
-                items.map((item, i) => (
+                items.map((item) => (
                   <File
                     path={item.path}
                     title={item.title}
                     img={imgGetter(item.type)}
                     key={item.title + item.path}
                     whenSelected={() => {
-                      console.log("item in map: ", item);
                       selectHandler(item);
                     }}
                     renameOnCreate={false}
@@ -244,9 +272,10 @@ function Server() {
                     editingTarget={editingTarget}
                     setEditingTarget={setEditingTarget}
                     renameNewFolder={renameFolder}
+                    deleteFolder={deleteFolder}
                   />
                 ))}
-              {items && items.length === 0 && (
+              {items && items.length === 0 && !creating && (
                 <p style={{ color: "#aaa", fontSize: "0.7em", margin: 10 }}>
                   This folder is empty
                 </p>
@@ -264,20 +293,8 @@ function Server() {
                   setCreating={setCreating}
                   setEditingTarget={setEditingTarget}
                   editingTarget={editingTarget}
-                  createNewFolder={(folderPath) => {
-                    fetch(`http://localhost:3333/root/${folderPath}`, {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        path: folderPath,
-                      }),
-                    })
-                      .then((res) => res.json())
-                      .then((res) => console.log(res))
-                      .finally(() => fetchDirectory(relativePath));
-                  }}
+                  deleteFolder={deleteFolder}
+                  createNewFolder={createNewFolder}
                 />
               )}
               <Menu
@@ -342,7 +359,10 @@ function Server() {
                   <ContextRow
                     label="Delete"
                     id="delete"
-                    onClickFunction={null}
+                    onClickFunction={() => {
+                      setOpenMenu(false);
+                      deleteFolder(targetToEdit?.path || "");
+                    }}
                     style={"none"}
                   />
                   <ContextRow

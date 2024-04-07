@@ -18,7 +18,7 @@ export function File({
 }: {
   img: string;
   title: string;
-  whenSelected: any;
+  whenSelected: null | ((item: Item) => void);
   renameOnCreate: boolean;
   relativePath: string;
   setCreating: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,11 +27,11 @@ export function File({
   path: string;
   editingTarget: boolean,
   setEditingTarget: React.Dispatch<React.SetStateAction<boolean>>;
-  renameNewFolder: any
+  renameNewFolder: null | ((path: string, oldName: string, newName: string) => void);
+  deleteFolder: (path: string, relativePath: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(renameOnCreate);
   const [fileTitle, setFileTitle] = useState(title);
-  const [oldName] = useState(title)
   return (
     <button id={path} className="file-component" onDoubleClick={whenSelected}>
       <img alt={path} src={img} />
