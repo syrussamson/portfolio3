@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import Window from "./Window";
 import { OpenProcesses } from "./Globals";
 import { useAtom } from "jotai";
-import click from './assets/windows-xp-start.wav'
+import clickSound from './assets/windows-xp-start.wav'
 
 interface AppInterface {
   title: string;
@@ -58,7 +58,11 @@ function Shortcut(
 function Desktop() {
   const [selectedShortcut, setSelectedShortcut] = useState<string | null>(null);
   const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses);
+  const sound = new Audio(clickSound)
 
+  const playClick = () => {
+    sound.play()
+  }
 
   const handleZindex = (processTitle: string) => {
     setOpenProcesses((prevProcesses) => {
@@ -109,7 +113,7 @@ function Desktop() {
   };
 
   return (
-    <div className="desktop-root">
+    <div className="desktop-root" onDoubleClick={playClick}>
       {/* Desktop apps */}
       {apps.map((app: AppInterface, index: number) => (
         <Shortcut
@@ -119,7 +123,6 @@ function Desktop() {
           selected={selectedShortcut === app.title}
           onSelect={() => handleSelectShortcut(app.title)}
           openProcess={() => handleOpenProcess(app.title, app.img)}
-          click={click}
         />
       ))}
       {/* Open processes */}
