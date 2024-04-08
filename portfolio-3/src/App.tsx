@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Taskbar from "./Taskbar";
 import Desktop from "./Desktop";
-import { Resizable } from "react-resizable";
 import Login from "./Login";
 
 function App() {
@@ -9,7 +8,7 @@ function App() {
 
   return (
     <>
-      {loginScreen && <Login />}
+      {loginScreen && <Login setLoginScreen={setLoginScreen} />}
       {!loginScreen && (
         <div className="gui-root">
           <Desktop />

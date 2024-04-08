@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
-import { OpenProcesses, RelativePath } from "../../Globals";
+import React, { MouseEventHandler, useEffect, useState } from "react";
+import { ErrorDialogue, RelativePath } from "../../Globals";
 import NavPanel from "../Shared/NavPanel";
-import FileTemplate, { FileTemplate as FileMock } from "../Shared/FileTemplate";
+import  { FileTemplate as FileMock } from "../Shared/FileTemplate";
 import File from "../Shared/FileFunctions";
 import documents from "../../assets/documents.png";
 import hd from "../../assets/harddrive.png";
@@ -11,13 +11,11 @@ import pc from "../../assets/network.png";
 import globe from "../../assets/globe.webp";
 import { Menu } from "@mui/material";
 import file from "../../assets/txt.png";
-import { v4 as uuidv4 } from "uuid";
-
-const uuid = uuidv4;
+import Error from "../Shared/Error";
 
 const pathBacktracer = (path: string) => {
   console.log(path);
-  let pathArray = path.split("/");
+  const pathArray = path.split("/");
   if (pathArray.length === 1) {
     return "";
   }
@@ -48,7 +46,7 @@ function ContextRow({
   label,
   style,
 }: {
-  onClickFunction: any;
+  onClickFunction: MouseEventHandler<HTMLButtonElement> | undefined;
   id: string;
   label: string;
   style: string;
@@ -69,7 +67,7 @@ function ContextRow({
 }
 
 function Server() {
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useAtom(ErrorDialogue);
   const [openMenu, setOpenMenu] = useState(false);
   const [menuServiceType, setMenuServiceType] = useState<string | null>(null);
   const [isInRoot, setIsInRoot] = useState(true);
@@ -132,18 +130,6 @@ function Server() {
       .then((res) => setItems(res));
   };
 
-  // POST it then map to Items
-  // const createNewFolder = (path: string) => {
-  //   console.log(path);
-  //   fetch(`http://localhost:3333/root/${path}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => setItems(res));
-  // };
   const createNewFolder = (path: string) => {
     fetch(`http://localhost:3333/root/${path}`, {
       method: "POST",
@@ -215,11 +201,21 @@ function Server() {
                   <button className="arrow-button">»</button>
                 </div>
                 <div className="command-row">
-                  <div>
+                  <div onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'Access denied.'
+                    });
+                  }}>
                     <img src={network} />
                     <p>Publish the folder</p>
                   </div>
-                  <div>
+                  <div onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'Sharing access denied.'
+                    });
+                  }}>
                     <img
                       src={globe}
                       style={{ transform: "rotate(180deg) scale(0.7)" }}
@@ -234,11 +230,21 @@ function Server() {
                   <button className="arrow-button">»</button>
                 </div>
                 <div className="command-row">
-                  <div>
+                  <div onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'Access denied.'
+                    });
+                  }}>
                     <img src={pc} />
                     <p>My Network</p>
                   </div>
-                  <div>
+                  <div onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'C:\\ Access denied.'
+                    });
+                  }}>
                     <img src={documents} />
                     <p>My Documents</p>
                   </div>
@@ -275,11 +281,7 @@ function Server() {
                     deleteFolder={deleteFolder}
                   />
                 ))}
-              {items && items.length === 0 && !creating && (
-                <p style={{ color: "#aaa", fontSize: "0.7em", margin: 10 }}>
-                  This folder is empty
-                </p>
-              )}
+
               {creating && (
                 <File
                   renameNewFolder={renameFolder}
@@ -294,7 +296,20 @@ function Server() {
                   setEditingTarget={setEditingTarget}
                   editingTarget={editingTarget}
                   deleteFolder={deleteFolder}
-                  createNewFolder={createNewFolder}
+                  createNewFolder={(folderPath) => {
+                    fetch(`http://localhost:3333/root/${folderPath}`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        path: folderPath,
+                      }),
+                    })
+                      .then((res) => res.json())
+                      .then((res) => console.log(res))
+                      .finally(() => fetchDirectory(relativePath));
+                  }}
                 />
               )}
               <Menu
@@ -315,7 +330,7 @@ function Server() {
                     <ContextRow
                       label="Open"
                       id="open"
-                      onClickFunction={null}
+                      onClickFunction={undefined}
                       style={"bold"}
                     />
                   )}
@@ -334,26 +349,26 @@ function Server() {
                   <ContextRow
                     label="Explore"
                     id="explore"
-                    onClickFunction={null}
+                    onClickFunction={undefined}
                     style={"disabled"}
                   />
                   <ContextRow
                     label="Extract files..."
                     id="explore"
-                    onClickFunction={null}
+                    onClickFunction={undefined}
                     style={"disabled"}
                   />
                   <ContextRow
                     label="Extract here"
                     id="explore"
-                    onClickFunction={null}
+                    onClickFunction={undefined}
                     style={"disabled"}
                   />
                   <ul />
                   <ContextRow
                     label="Create Shortcut"
                     id="create-shortcut"
-                    onClickFunction={null}
+                    onClickFunction={undefined}
                     style={"none"}
                   />
                   <ContextRow
@@ -378,7 +393,7 @@ function Server() {
                   <ContextRow
                     label="Properties"
                     id="properties"
-                    onClickFunction={null}
+                    onClickFunction={undefined}
                     style={"none"}
                   />
                 </div>
@@ -388,7 +403,12 @@ function Server() {
         )}
         {isInRoot && (
           <div className="file-system-home">
-            <div className="filesystem-container2">
+            <div className="filesystem-container2 " onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'C:\\Shared Documents\\ Access denied.'
+                    });
+                  }}>
               <h5>Files Stored on This Computer</h5>
               <FileMock
                 title="Shared Documents"
@@ -396,10 +416,15 @@ function Server() {
                 whenSelected={openErrorDialogue}
               />
             </div>
-            <div className="filesystem-container2">
+            <div className="filesystem-container2" onDoubleClick={() => {
+                    setError({
+                      open: true,
+                      text: 'C:\\ Access denied.'
+                    });
+                  }}>
               <h5>Hard Disk Drives</h5>
               <FileMock
-                title="Local Disc (C:)"
+                title="Local Disc (C:\)"
                 img={hd}
                 whenSelected={openErrorDialogue}
               />

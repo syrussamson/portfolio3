@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import bus from "./assets/bus2.png";
 import trash from "./assets/trash.ico";
-import ie from './assets/ie.ico'
-import notepad from './assets/NOTEPAD.EXE_14_2-3.png'
-import computer from './assets/mypc.png'
+import ie from "./assets/ie.ico";
+import notepad from "./assets/NOTEPAD.EXE_14_2-3.png";
+import computer from "./assets/mypc.png";
 import Draggable from "react-draggable";
-import { v4 as uuidv4 } from "uuid";
 import Window from "./Window";
-import { OpenProcesses } from "./Globals";
+import { ErrorDialogue, OpenProcesses } from "./Globals";
 import { useAtom } from "jotai";
-import clickSound from './assets/windows-xp-start.wav'
+import clickSound from "./assets/windows-xp-start.wav";
+import errorIcon from './assets/error.png'
 
 interface AppInterface {
   title: string;
@@ -58,11 +58,12 @@ function Shortcut(
 function Desktop() {
   const [selectedShortcut, setSelectedShortcut] = useState<string | null>(null);
   const [openProcesses, setOpenProcesses] = useAtom(OpenProcesses);
-  const sound = new Audio(clickSound)
+  const [error, setError] = useAtom(ErrorDialogue);
+  const sound = new Audio(clickSound);
 
   const playClick = () => {
-    sound.play()
-  }
+    sound.play();
+  };
 
   const handleZindex = (processTitle: string) => {
     setOpenProcesses((prevProcesses) => {
@@ -91,17 +92,15 @@ function Desktop() {
     if (!openProcesses.find((process) => process.title === title)) {
       setOpenProcesses((prevProcesses) => [
         ...prevProcesses,
-        { title: title, 
-          zIndex: 10000, 
-          minimized: false,
-          img: img
-        },
+        { title: title, zIndex: 10000, minimized: false, img: img },
       ]);
     }
   };
 
   const handlePurgeProcess = (title: string) => {
-    setOpenProcesses((prevProcesses) => prevProcesses.filter((process) => process.title !== title));
+    setOpenProcesses((prevProcesses) =>
+      prevProcesses.filter((process) => process.title !== title)
+    );
   };
 
   const handleMinimizeProcess = (title: string) => {
@@ -136,14 +135,22 @@ function Desktop() {
           zIndex={process.zIndex}
           minimized={process.minimized}
           handleMinimizeProcess={handleMinimizeProcess}
-        >
-          {process.title}
-        </Window>
+        />
       ))}
+      {error.open && (
+        <Window
+          img={errorIcon}
+          handleZindex={() => undefined}
+          zIndex={1000000000}
+          process='error'
+          minimized={false}
+          handleMinimizeProcess={handleMinimizeProcess}
+          handlePurgeProcess={() => setError({ open: false, text: "" })}
+        >
+        </Window>
+      )}
     </div>
   );
 }
-
-
 
 export default Desktop;

@@ -1,0 +1,33 @@
+.start-button-root {
+    position: absolute;
+    bottom: 30px;
+    left: 0px;
+    width: 350px;
+    height: 420px;
+    background-color: white;
+    .start-button-header {
+        background-color: blue;
+        height: 60px;
+    }
+}
+.left-item-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.left-item-parent {
+    height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: rgba(255, 0, 0, 0.116);
+    border-right: 1px solid blue;
+    p {
+        font-size: 0.8em;
+    }
+
+}
+.left-item-icon, .is-all-programs {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}

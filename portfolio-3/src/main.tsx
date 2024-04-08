@@ -6,6 +6,7 @@ import "./apps/TTCTracker/TTCTracker.css"
 import "./apps/IE/IE.css"
 import "./apps/Notepad/Notepad.css"
 import "./apps/RecycleBin/Recyclebin.css"
+import "./startButton.css"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />

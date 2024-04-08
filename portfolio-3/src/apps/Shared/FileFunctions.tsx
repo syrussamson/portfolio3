@@ -78,7 +78,7 @@ export function File({
         </ClickAwayListener>
       )}
       {!isEditing && !editingTarget && (
-        <a style={{background: (editingTarget && targetToEdit?.path === path )? 'red' : 'transparent'}} onDoubleClick={() => setIsEditing(true)}>{fileTitle}</a>
+        <a onDoubleClick={() => setIsEditing(true)}>{fileTitle}</a>
       )}
       {
         !isEditing && editingTarget && targetToEdit && targetToEdit.path !== path && (
