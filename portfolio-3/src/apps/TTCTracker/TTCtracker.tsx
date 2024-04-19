@@ -1,54 +1,83 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import React from "react";
 import bus from "../../assets/busSelected.png";
 import bus2 from "../../assets/busNotSelected.png";
+interface Bus {
+  routeTag: string;
+  predictable: string;
+  heading: string;
+  speedKmHr: string;
+  lon: string;
+  id: string;
+  dirTag: string;
+  lat: string;
+  secsSinceReport: string;
+}
 
 function TTCTracker() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDo6mk8x9SbjCeZz2aSI35TfKR6hxB47so",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
-  const [vehicles, setVehicles] = useState<any>();
-  const [map, setMap] = useState(null);
+  const [vehicles, setVehicles] = useState<Bus[]>();
+  const [map, setMap] = useState<any>(null);
   const [center, setCenter] = useState({ lat: 43.72436, lng: -79.37812 });
-  const [selectedBus, setSelectedBus] = useState<any>();
+  const [selectedBus, setSelectedBus] = useState<Bus | undefined>(undefined);
 
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:3333");
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-    };
+
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setVehicles(data);
-
-        console.log('data', data)
-        const foundBus = data.vehicle.find((bus: any) => bus?.id === selectedBus?.id)
-        setSelectedBus(foundBus)
-      
+      console.log("delta: ", data);
+      setVehicles((prevVehicles) => {
+        if (!prevVehicles) {
+          console.log("nothing here: ");
+          return data;
+        } else {
+          return prevVehicles.map((vehicle) => {
+            const updatedVehicle = data.find(
+              (delta: Bus) => delta.id === vehicle.id
+            );
+            if (updatedVehicle) {
+              return updatedVehicle;
+            }
+            return vehicle;
+          });
+        }
+      });
     };
+
     socket.onclose = () => {
       console.log("WebSocket disconnected");
     };
+
     return () => {
       socket.close();
     };
   }, []);
 
-  console.log(selectedBus);
+  useEffect(() => {
+    if (selectedBus && vehicles) {
+      console.log("selected bus: ", selectedBus);
+      const foundBus = vehicles.find((bus: Bus) => bus.id === selectedBus.id);
+      if (foundBus) {
+        setSelectedBus(foundBus);
+      }
+    }
+  }, [vehicles]);
 
-  const onLoad = React.useCallback(function callback(map: any) {
+  const onLoad = useCallback((map: any) => {
     setMap(map);
   }, []);
 
-  const onUnmount = React.useCallback(function callback() {
+  const onUnmount = useCallback(() => {
     setMap(null);
   }, []);
 
   const onMapMove = () => {
-    // Update the center coordinates when the map is moved
     if (map) {
       const newCenter = map?.getCenter();
       console.log(map.getCenter());
@@ -70,7 +99,6 @@ function TTCTracker() {
                   <p>Heading: {selectedBus.heading}</p>
                   <p>Latitude: {selectedBus.lat}</p>
                   <p>Longitude: {selectedBus.lon}</p>
-                  <p>Last updated: {selectedBus.secsSinceReport} Seconds ago</p>
                 </div>
               )}
             </div>
@@ -85,7 +113,7 @@ function TTCTracker() {
               mapContainerStyle={{ height: "100%" }}
             >
               {vehicles &&
-                vehicles.vehicle?.map((vehicle: any) => (
+                vehicles.map((vehicle: any) => (
                   <div>
                     <Marker
                       onClick={() => setSelectedBus(vehicle)}

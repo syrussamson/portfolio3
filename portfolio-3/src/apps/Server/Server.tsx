@@ -11,8 +11,7 @@ import pc from "../../assets/network.png";
 import globe from "../../assets/globe.webp";
 import { Menu } from "@mui/material";
 import file from "../../assets/txt.png";
-import Error from "../Shared/Error";
-
+ 
 const pathBacktracer = (path: string) => {
   console.log(path);
   const pathArray = path.split("/");
@@ -67,7 +66,7 @@ function ContextRow({
 }
 
 function Server() {
-  const [error, setError] = useAtom(ErrorDialogue);
+  const [ , setError] = useAtom(ErrorDialogue);
   const [openMenu, setOpenMenu] = useState(false);
   const [menuServiceType, setMenuServiceType] = useState<string | null>(null);
   const [isInRoot, setIsInRoot] = useState(true);

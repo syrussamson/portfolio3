@@ -68,7 +68,6 @@ function Taskbar() {
                   <LeftSideItem
                     title="hello"
                     icon={start1}
-                    icon={start1}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
