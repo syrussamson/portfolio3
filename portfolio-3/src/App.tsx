@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Taskbar from "./Taskbar";
 import Desktop from "./Desktop";
 import Login from "./Login";
 
 function App() {
-  const [loginScreen, setLoginScreen] = useState(false);
+  const [loginScreen, setLoginScreen] = useState(true);
 
   return (
     <>

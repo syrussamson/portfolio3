@@ -1,11 +1,18 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
-import windows from "./assets/windows.png";
+import { useEffect, useState } from "react";
 import start1 from "./assets/start1.png";
 import start2 from "./assets/start2.png";
 import sound from "./assets/sound.png";
 import { OpenProcesses, StartButtonIsOpen } from "./Globals";
 import { useAtom } from "jotai";
-
+import trash from './assets/trash.ico'
+import ttc from './assets/bus.png'
+import ie from './assets/ie.ico'
+import np from './assets/NOTEPAD.EXE_14_2-3.png'
+import comp from './assets/mypc.png'
+import mail from './assets/sendmail.dll_14_2001-3.png'
+import documents from './assets/documents.png'
+import gobutton from './assets/gobutton.png'
+import menupic from './assets/menu-pic.png'
 const LeftSideItem = ({
   icon,
   title,
@@ -16,15 +23,24 @@ const LeftSideItem = ({
   isAllPrograms: boolean;
 }) => {
   return (
-    <div className="left-item-parent">
+    <div className={`left-item-parent ${isAllPrograms ? 'all-programs-parent' : ''}`}>
       <div className="left-item-container">
         {isAllPrograms ? (
+<>
+</>        ) : (
+          <img className="left-item-icon" src={icon} />
+        )}
+      </div>
+      <span className={`left-item-text ${isAllPrograms && 'all-program-item'}`} style={{
+        fontWeight: isAllPrograms ? "900" : ''
+        }}>{title}</span>
+      <div className="left-item-container">
+        {!isAllPrograms ? (
           <div className="is-all-programs" />
         ) : (
           <img className="left-item-icon" src={icon} />
         )}
       </div>
-      <p className="left-item-text">{title}</p>
     </div>
   );
 };
@@ -39,7 +55,6 @@ function Taskbar() {
       setTime(new Date());
     }, 1000);
 
-    // Clear interval on unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -56,53 +71,56 @@ function Taskbar() {
         </div>
         {startButtonIsOpen && (
           <div className="start-button-root">
-            <div className="start-button-header">header</div>
+            <div className="start-button-header">Sy</div>
             <div className="start-button-main container-fluid">
               <div className="start-button-row row">
-                <div className="col-6">
+                <div className="col-6 menu-left">
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="Recycle Bin"
+                    icon={trash}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="TTC"
+                    icon={ttc}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="Internet Explorer"
+                    icon={ie}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="Notepad"
+                    icon={np}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="Computer"
+                    icon={comp}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="My Documents"
+                    icon={documents}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
-                    title="hello"
-                    icon={start1}
+                    title="E-Mail"
+                    icon={mail}
                     isAllPrograms={false}
                   />
                   <LeftSideItem
                     title="All Programs"
-                    icon={null}
+                    icon={gobutton}
                     isAllPrograms={true}
                   />
-                  <div className="all-programs"></div>
+                  <div className="all-programs">
+                    
+                  </div>
                 </div>
-                <div className="col-6"></div>
+                <div className="col-6 menu-right"></div>
+                <img className='menu-pic' src={menupic} />
               </div>
             </div>
           </div>

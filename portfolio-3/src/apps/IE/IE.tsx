@@ -1,5 +1,4 @@
-import React from 'react'
-import cancel from '../../assets/cancel.png'
+ import cancel from '../../assets/cancel.png'
 import refresh from '../../assets/refresh.png'
 import home from '../../assets/hnetwiz.dll_14_10000-3.png'
 import favourites from '../../assets/1363.png'

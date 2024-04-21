@@ -1,24 +1,29 @@
 :root {
-    --border: #d4d0c17d;
+   --border: #d4d0c17d;
 }
+
 .toolbar-button {
-    margin: 0px 3px;
-    cursor: pointer;
- img {
-    height: 25px;
-    width: 25px;
-    object-fit: cover;
- }
- a {
-    color: black !important
- }
- &:active {
-    background-color: rgba(230, 213, 182, 0.185);
-    box-shadow: inset 3px 3px 3px #0000000b;
- }
+   margin: 0px 3px;
+   cursor: pointer;
+
+   img {
+      height: 25px;
+      width: 25px;
+      object-fit: cover;
+   }
+
+   a {
+      color: black !important
+   }
+
+   &:active {
+      background-color: rgba(230, 213, 182, 0.185);
+      box-shadow: inset 3px 3px 3px #0000000b;
+   }
 }
+
 .divider {
-    margin-right: 6px;
-    padding-right: 4px;
-    border-right: 1px solid var(--border)
+   margin-right: 6px;
+   padding-right: 4px;
+   border-right: 1px solid var(--border)
 }

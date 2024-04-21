@@ -1,20 +1,16 @@
-import React from "react";
 import bin from "../../assets/trash.ico";
 import up from "../../assets/up.png";
-import up2 from "../../assets/up2.png";
-import views from "../../assets/views.png";
 import pc from "../../assets/mypc.png";
 import documents from "../../assets/documents.png";
-import search from "../../assets/shell32.dll_14_23-4.png";
 import NavPanel from "../Shared/NavPanel";
 import { useAtom } from "jotai";
 import { ErrorDialogue } from "../../Globals";
 function RecycleBin() {
-  const [error, setError] = useAtom(ErrorDialogue)
+  const [_, setError] = useAtom(ErrorDialogue);
   return (
     <>
       <div className="rc-wrapper">
-        <NavPanel backFunction={undefined} />
+        <NavPanel backFunction={undefined} path={undefined} />
       </div>
       <div className="rc-main row">
         <div className="rc-commands">
@@ -24,21 +20,25 @@ function RecycleBin() {
               <button className="arrow-button">»</button>
             </div>
             <div className="command-row">
-              <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'Cannot Empty Recycle Bin. Access denied.'
-                    });
-                  }}>
+              <div
+                onDoubleClick={() => {
+                  setError({
+                    open: true,
+                    text: "Cannot Empty Recycle Bin. Access denied.",
+                  });
+                }}
+              >
                 <img src={bin} />
                 <p>Empty the Recycle Bin</p>
               </div>
-              <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'Cannot Restore Items. Access denied.'
-                    });
-                  }}>
+              <div
+                onDoubleClick={() => {
+                  setError({
+                    open: true,
+                    text: "Cannot Restore Items. Access denied.",
+                  });
+                }}
+              >
                 <img
                   src={up}
                   style={{ transform: "rotate(180deg) scale(0.7)" }}
@@ -53,21 +53,25 @@ function RecycleBin() {
               <button className="arrow-button">»</button>
             </div>
             <div className="command-row">
-              <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'C:\\ Access denied.'
-                    });
-                  }}>
+              <div
+                onDoubleClick={() => {
+                  setError({
+                    open: true,
+                    text: "C:\\ Access denied.",
+                  });
+                }}
+              >
                 <img src={pc} />
                 <p>My Computer</p>
               </div>
-              <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'C:\\My Documents\\ Access denied.'
-                    });
-                  }}>
+              <div
+                onDoubleClick={() => {
+                  setError({
+                    open: true,
+                    text: "C:\\My Documents\\ Access denied.",
+                  });
+                }}
+              >
                 <img src={documents} />
                 <p>My Documents</p>
               </div>

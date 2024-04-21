@@ -1,27 +1,85 @@
+.all-programs-parent {
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
 .start-button-root {
+    border-radius: 7px 7px 0px 0px;
     position: absolute;
     bottom: 30px;
     left: 0px;
     width: 350px;
-    height: 420px;
+    height: auto;
+    background-color: red;
     background-color: white;
+    
     .start-button-header {
-        background-color: blue;
+        color: white;
+        border-radius: 7px 7px 0px 0px;
+        background: linear-gradient(0deg, rgb(90,144,299), rgb(13, 75, 200) 80%);
+        box-shadow: inset 0px 19px 29px #1d69ed, inset 0px 2px 2px rgb(255, 255, 255), inset 2px 1px 4px rgb(255, 255, 255);
+        border-bottom: 2px solid rgb(78, 121, 207);
         height: 60px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        position: relative;
     }
+
+    .start-button-header::after {
+        content: "";
+        width: 94%;
+        height: 2px;
+        bottom: -4px;
+        background: linear-gradient(90deg,white, rgb(255, 170, 131), rgba(255, 255, 255, 0));
+        position: absolute;
+    }
+}
+.all-program-item::after{
+    content: '';
+    height: 1px;
+    width: 140px;
+    background: linear-gradient(90deg,rgba(255, 255, 255, 0), rgb(185, 185, 185), rgba(255, 255, 255, 0));
+    top: -10px;
+    left: 0;
+    position: absolute;
+}
+.menu-pic {
+    padding: 0;
+    align-self: flex-end;
+    margin: 0;
+}
+.start-button-root {
+    .left-item-text {
+        margin: 0px !important;
+    }
+}
+
+.all-program-item {
+    position: relative;
+    display: flex;
+}
+.left-item-parent {
 }
 .left-item-container {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    img {
+        width: 35px;
+        height: 35px;
+        
+    }
 }
 .left-item-parent {
     height: 40px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    background-color: rgba(255, 0, 0, 0.116);
-    border-right: 1px solid blue;
-    p {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.116);
+    border-right: 1px solid rgb(160, 214, 255);
+    span {
         font-size: 0.8em;
     }
 
@@ -30,4 +88,11 @@
     width: 40px;
     height: 40px;
     object-fit: contain;
+}
+.col-6 {
+    padding-right: 0
+}
+.menu-right {
+    background-color: rgb(214, 228, 255);
+    border-right: 2px solid rgb(83, 117, 191)
 }

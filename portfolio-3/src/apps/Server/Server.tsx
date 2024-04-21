@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { ErrorDialogue, RelativePath } from "../../Globals";
 import NavPanel from "../Shared/NavPanel";
-import  { FileTemplate as FileMock } from "../Shared/FileTemplate";
+import { FileTemplate as FileMock } from "../Shared/FileTemplate";
 import File from "../Shared/FileFunctions";
 import documents from "../../assets/documents.png";
 import hd from "../../assets/harddrive.png";
@@ -11,7 +11,7 @@ import pc from "../../assets/network.png";
 import globe from "../../assets/globe.webp";
 import { Menu } from "@mui/material";
 import file from "../../assets/txt.png";
- 
+
 const pathBacktracer = (path: string) => {
   console.log(path);
   const pathArray = path.split("/");
@@ -66,7 +66,7 @@ function ContextRow({
 }
 
 function Server() {
-  const [ , setError] = useAtom(ErrorDialogue);
+  const [, setError] = useAtom(ErrorDialogue);
   const [openMenu, setOpenMenu] = useState(false);
   const [menuServiceType, setMenuServiceType] = useState<string | null>(null);
   const [isInRoot, setIsInRoot] = useState(true);
@@ -77,9 +77,6 @@ function Server() {
   const [targetToEdit, setTargetToEdit] = useState<Item | undefined>();
   const [editingTarget, setEditingTarget] = useState(false);
 
-  const openErrorDialogue = () => {
-    setError(true);
-  };
   const openServer = () => {
     setIsInRoot(false);
   };
@@ -142,8 +139,8 @@ function Server() {
       .then((res) => res.json())
       .then((res) => console.log(res))
       .finally(() => fetchDirectory(relativePath));
-  }
-  
+  };
+
   // DELETE it then map to Items
   const deleteFolder = (path: string) => {
     console.log(path);
@@ -200,21 +197,25 @@ function Server() {
                   <button className="arrow-button">»</button>
                 </div>
                 <div className="command-row">
-                  <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'Access denied.'
-                    });
-                  }}>
+                  <div
+                    onDoubleClick={() => {
+                      setError({
+                        open: true,
+                        text: "Access denied.",
+                      });
+                    }}
+                  >
                     <img src={network} />
                     <p>Publish the folder</p>
                   </div>
-                  <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'Sharing access denied.'
-                    });
-                  }}>
+                  <div
+                    onDoubleClick={() => {
+                      setError({
+                        open: true,
+                        text: "Sharing access denied.",
+                      });
+                    }}
+                  >
                     <img
                       src={globe}
                       style={{ transform: "rotate(180deg) scale(0.7)" }}
@@ -229,21 +230,25 @@ function Server() {
                   <button className="arrow-button">»</button>
                 </div>
                 <div className="command-row">
-                  <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'Access denied.'
-                    });
-                  }}>
+                  <div
+                    onDoubleClick={() => {
+                      setError({
+                        open: true,
+                        text: "Access denied.",
+                      });
+                    }}
+                  >
                     <img src={pc} />
                     <p>My Network</p>
                   </div>
-                  <div onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'C:\\ Access denied.'
-                    });
-                  }}>
+                  <div
+                    onDoubleClick={() => {
+                      setError({
+                        open: true,
+                        text: "C:\\ Access denied.",
+                      });
+                    }}
+                  >
                     <img src={documents} />
                     <p>My Documents</p>
                   </div>
@@ -288,27 +293,15 @@ function Server() {
                   targetToEdit={targetToEdit}
                   img={documents}
                   title="New Folder"
-                  whenSelected={null}
+                  whenSelected={undefined}
                   renameOnCreate={true}
                   relativePath={relativePath}
                   setCreating={setCreating}
                   setEditingTarget={setEditingTarget}
                   editingTarget={editingTarget}
                   deleteFolder={deleteFolder}
-                  createNewFolder={(folderPath) => {
-                    fetch(`http://localhost:3333/root/${folderPath}`, {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        path: folderPath,
-                      }),
-                    })
-                      .then((res) => res.json())
-                      .then((res) => console.log(res))
-                      .finally(() => fetchDirectory(relativePath));
-                  }}
+                  createNewFolder={createNewFolder}
+                  
                 />
               )}
               <Menu
@@ -402,30 +395,46 @@ function Server() {
         )}
         {isInRoot && (
           <div className="file-system-home">
-            <div className="filesystem-container2 " onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'C:\\Shared Documents\\ Access denied.'
-                    });
-                  }}>
+            <div
+              className="filesystem-container2 "
+              onDoubleClick={() => {
+                setError({
+                  open: true,
+                  text: "C:\\Shared Documents\\ Access denied.",
+                });
+              }}
+            >
               <h5>Files Stored on This Computer</h5>
               <FileMock
                 title="Shared Documents"
                 img={documents}
-                whenSelected={openErrorDialogue}
+                whenSelected={() =>
+                  setError({
+                    open: true,
+                    text: "Access denied.",
+                  })
+                }
               />
             </div>
-            <div className="filesystem-container2" onDoubleClick={() => {
-                    setError({
-                      open: true,
-                      text: 'C:\\ Access denied.'
-                    });
-                  }}>
+            <div
+              className="filesystem-container2"
+              onDoubleClick={() => {
+                setError({
+                  open: true,
+                  text: "C:\\ Access denied.",
+                });
+              }}
+            >
               <h5>Hard Disk Drives</h5>
               <FileMock
                 title="Local Disc (C:\)"
                 img={hd}
-                whenSelected={openErrorDialogue}
+                whenSelected={() =>
+                  setError({
+                    open: true,
+                    text: "Local Disc (C:\\ Access Deined.",
+                  })
+                }
               />
             </div>
             <div className="filesystem-container2">

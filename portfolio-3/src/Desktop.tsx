@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import bus from "./assets/bus2.png";
 import trash from "./assets/trash.ico";
 import ie from "./assets/ie.ico";
@@ -9,7 +9,7 @@ import Window from "./Window";
 import { ErrorDialogue, OpenProcesses } from "./Globals";
 import { useAtom } from "jotai";
 import clickSound from "./assets/windows-xp-start.wav";
-import errorIcon from './assets/error.png'
+import errorIcon from "./assets/error.png";
 
 interface AppInterface {
   title: string;
@@ -142,12 +142,11 @@ function Desktop() {
           img={errorIcon}
           handleZindex={() => undefined}
           zIndex={1000000000}
-          process='error'
+          process="error"
           minimized={false}
           handleMinimizeProcess={handleMinimizeProcess}
           handlePurgeProcess={() => setError({ open: false, text: "" })}
-        >
-        </Window>
+        ></Window>
       )}
     </div>
   );

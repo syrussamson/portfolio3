@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import React from "react";
 import bus from "../../assets/busSelected.png";
 import bus2 from "../../assets/busNotSelected.png";
 interface Bus {
@@ -61,7 +60,6 @@ function TTCTracker() {
 
   useEffect(() => {
     if (selectedBus && vehicles) {
-      console.log("selected bus: ", selectedBus);
       const foundBus = vehicles.find((bus: Bus) => bus.id === selectedBus.id);
       if (foundBus) {
         setSelectedBus(foundBus);

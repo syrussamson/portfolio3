@@ -1,4 +1,3 @@
-import React from "react";
 import up2 from "../../assets/up2.png";
 import views from "../../assets/views.png";
 import documents from "../../assets/documents.png";
@@ -7,8 +6,8 @@ function NavPanel({
   path,
   backFunction,
 }: {
-  path: string;
-  backFunction: () => void;
+  path: string | undefined;
+  backFunction: (() => void) | undefined;
 }) {
   return (
     <div className="browser-toolbar">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import icon from "./assets/icon.png";
 import pfp from "./assets/pfp.webp";
 import startup from "./assets/startup.mp3";
