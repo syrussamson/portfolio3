@@ -26,7 +26,7 @@ function Login({
       <div className="login-top">
         <div className="login-container container">
           <div className="row">
-            <div className="col-6 d-flex justify-content-end login-left">
+            <div className="col-6 pe-3 d-flex justify-content-end login-left">
               <img src={icon} className="login-icon" />
 
               <p>To begin, click on your user name</p>
@@ -38,14 +38,7 @@ function Login({
                 </div>
                 <div className="header-info px-4">
                   <h4>Sy</h4>
-                  {loading && (
-                    <div className="ellips">
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                    </div>
-                  )}
+                  
                 </div>
               </div>
               <div className="row-below"></div>

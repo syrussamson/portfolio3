@@ -8,7 +8,7 @@ import Server from "./apps/Server/Server";
 import { ErrorDialogue, RelativePath } from "./Globals";
 import { useAtom } from "jotai";
 import Error from "./apps/Shared/Error";
-
+ 
 const positionGetter = (program: string) => {
   if (program === "Toronto Transit Commission") {
     return { x: 500, y: -140 };
@@ -23,6 +23,9 @@ const positionGetter = (program: string) => {
     return { x: 200, y: -300 };
   }
   if (program === "error") {
+    return { x: 220, y: -200 };
+  }
+  if (program === "3D Pinball for Windows - Space Cadet") {
     return { x: 220, y: -200 };
   }
   return { x: 70, y: -379 };

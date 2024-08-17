@@ -30,7 +30,7 @@ function IE() {
         <div className='toolbar-button'><img src={notes}></img></div>
         <div className='toolbar-button'><img alt='notes' src={notes2}></img></div>
     </div>
-    <iframe src="https://bing.com" className='iframe-container' style={{height: '100%', width: '100%'}}>
+    <iframe src='https://www.dailymail.co.uk/home/index.html' className='iframe-container' style={{height: '100%', width: '100%'}}>
 
     </iframe>
 </div>

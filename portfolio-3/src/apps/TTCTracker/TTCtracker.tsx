@@ -25,38 +25,54 @@ function TTCTracker() {
   const [center, setCenter] = useState({ lat: 43.72436, lng: -79.37812 });
   const [selectedBus, setSelectedBus] = useState<Bus | undefined>(undefined);
 
+  // useEffect(() => {
+  //   const socket = new WebSocket("ws://localhost:3333");
+
+  //   socket.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     console.log("delta: ", data);
+  //     setVehicles((prevVehicles) => {
+  //       if (!prevVehicles) {
+  //         return data;
+  //       } else {
+  //         return prevVehicles.map((vehicle) => {
+  //           const updatedVehicle = data.find(
+  //             (delta: Bus) => delta.id === vehicle.id
+  //           );
+  //           if (updatedVehicle) {
+  //             return updatedVehicle;
+  //           }
+  //           return vehicle;
+  //         });
+  //       }
+  //     });
+  //   };
+
+  //   socket.onclose = () => {
+  //     console.log("WebSocket disconnected");
+  //   };
+
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3333");
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("delta: ", data);
-      setVehicles((prevVehicles) => {
-        if (!prevVehicles) {
-          console.log("nothing here: ");
-          return data;
-        } else {
-          return prevVehicles.map((vehicle) => {
-            const updatedVehicle = data.find(
-              (delta: Bus) => delta.id === vehicle.id
-            );
-            if (updatedVehicle) {
-              return updatedVehicle;
-            }
-            return vehicle;
-          });
-        }
-      });
+     const fetchVehicles = async () => {
+      try {
+        const response = await fetch('https://retro.umoiq.com/service/publicJSONFeed?command=vehicleLocations&a=ttc&t=0');
+        const data = await response.json();
+        const { vehicle } = data;
+        setVehicles(vehicle);
+      } catch (error) {
+        console.error('Error fetching vehicle data:', error);
+      }
     };
-
-    socket.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-
-    return () => {
-      socket.close();
-    };
+    fetchVehicles();
+    const intervalId = setInterval(fetchVehicles, 3000);
+    return () => clearInterval(intervalId);
   }, []);
+
 
   useEffect(() => {
     if (selectedBus && vehicles) {
@@ -114,6 +130,14 @@ function TTCTracker() {
                 vehicles.map((vehicle: any) => (
                   <div>
                     <Marker
+                    options={
+                      {
+                       icon: {
+                          url: selectedBus?.id === vehicle.id ? bus : bus2,
+                          scaledSize: new window.google.maps.Size(25, 25),
+                        },
+                      }
+                    }
                       onClick={() => setSelectedBus(vehicle)}
                       icon={selectedBus?.id === vehicle.id ? bus : bus2}
                       key={vehicle.id}

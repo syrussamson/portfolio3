@@ -10,7 +10,7 @@ import { ErrorDialogue, OpenProcesses } from "./Globals";
 import { useAtom } from "jotai";
 import clickSound from "./assets/windows-xp-start.wav";
 import errorIcon from "./assets/error.png";
-
+ 
 interface AppInterface {
   title: string;
   img: string;
@@ -82,7 +82,7 @@ function Desktop() {
     { title: "Internet Explorer", img: ie },
     { title: "Notepad", img: notepad },
     { title: "Computer", img: computer },
-  ];
+   ];
 
   const handleSelectShortcut = (title: string) => {
     setSelectedShortcut(title);
