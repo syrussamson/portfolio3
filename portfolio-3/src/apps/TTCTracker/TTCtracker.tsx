@@ -48,7 +48,7 @@ function TTCTracker() {
   //     });
   //   };
 
-  //   socket.onclose = () => {
+  //   socket.onclose = () => { 
   //     console.log("WebSocket disconnected");
   //   };
 
@@ -59,6 +59,7 @@ function TTCTracker() {
 
   useEffect(() => {
      const fetchVehicles = async () => {
+      
       try {
         const response = await fetch('https://retro.umoiq.com/service/publicJSONFeed?command=vehicleLocations&a=ttc&t=0');
         const data = await response.json();
